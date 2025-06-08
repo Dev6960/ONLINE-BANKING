@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire d'inscription</title>
     <style>
-        /* Reset de base pour enlever les marges et les espacements par défaut */
+        /* Style similaire au précédent */
         * {
             margin: 0;
             padding: 0;
@@ -51,10 +51,6 @@
             border-radius: 4px;
             font-size: 16px;
             color: #333;
-        }
-
-        input[type="date"] {
-            padding: 10px;
         }
 
         button {
@@ -108,7 +104,13 @@
         // Lorsque le formulaire est soumis, rediriger vers acceuil.html
         document.getElementById("signup-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Empêche l'envoi du formulaire
-            window.location.href = "acceuil.html"; // Redirige vers la page d'accueil
+            
+            // Récupère le prénom et le stocke dans localStorage
+            var firstName = document.getElementById("first-name").value;
+            localStorage.setItem("first-name", firstName);
+            
+            // Redirige vers la page d'accueil
+            window.location.href = "acceuil.html";
         });
     </script>
 </body>
