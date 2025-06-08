@@ -106,15 +106,15 @@
     </div>
 
     <script>
-        // Simuler les informations de connexion
-        const correctEmail = ibrahimcongo802@gmail.com";
-        const correctPassword = "1234TESTING";
+        // Informations de connexion simulées
+        const correctEmail = "ibrahimcongo802@gmail.com"; // Email prédéfini
+        const correctPassword = "motdepasse123"; // Mot de passe prédéfini
 
         // Gérer la soumission du formulaire de connexion
         document.getElementById("login-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Empêche l'envoi du formulaire
 
-            // Récupère les données saisies
+            // Récupère les données saisies par l'utilisateur
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
@@ -126,9 +126,13 @@
 
             // Vérifier si les informations sont correctes
             if (email === correctEmail && password === correctPassword) {
+                console.log("Connexion réussie !"); // Débogage
                 localStorage.setItem("email", email); // Enregistrer l'email dans le localStorage
-                window.location.href = "acceuil.html"; // Rediriger vers la page d'accueil
+                
+                // Rediriger vers la page d'accueil
+                window.location.href = "acceuil.html"; // Assurez-vous que le chemin vers acceuil.html est correct
             } else {
+                // Si les informations sont incorrectes, afficher un message d'erreur
                 document.getElementById("error-message").textContent = "Informations incorrectes. Connexion échouée.";
             }
         });
