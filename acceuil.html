@@ -120,11 +120,6 @@
             text-align: left; /* Alignement à gauche */
         }
 
-        /* Suppression de la croix rouge de la modale */
-        .close-btn {
-            display: none; /* Masquer le bouton de fermeture */
-        }
-
         .modal-content button {
             background-color: #f44336;
             color: white;
@@ -135,14 +130,6 @@
             cursor: pointer;
             border-radius: 8px;
             font-size: 16px;
-        }
-
-        .modal-content .left-btn {
-            float: left;
-        }
-
-        .modal-content .right-btn {
-            float: right;
         }
 
         .modal-content button:hover {
@@ -170,15 +157,6 @@
             border-radius: 5px;
             text-align: center;
         }
-
-        /* Positionner la bulle de chat Tawk à droite de l'écran */
-        #Tawk_1 {
-            position: fixed;
-            top: 20px;
-            left: auto;  /* Mettre à gauche auto pour se placer à droite */
-            right: 20px; /* Positionner la bulle à 20px à droite */
-            z-index: 9999;
-        }
     </style>
 </head>
 <body>
@@ -190,16 +168,16 @@
 
     <!-- Icônes en bas -->
     <div class="footer-icons">
-        <div onclick="showPortefeuille()">
+        <div id="portefeuilleBtn">
             <i class="fas fa-wallet" title="Portefeuille"></i>
             <span>Portefeuille</span>
         </div>
-        <div>
+        <div onclick="window.location.href='virement.html'">
             <i class="fas fa-exchange-alt" title="Virement"></i>
             <span>Virement</span>
         </div>
-        <div>
-            <i class="fas fa-credit-card" title="Carte virtuelle" onclick="showVirtualCard()"></i>
+        <div id="virtualCardBtn">
+            <i class="fas fa-credit-card" title="Carte virtuelle"></i>
             <span>Carte virtuelle</span>
         </div>
         <div onclick="showCompte()">
@@ -208,52 +186,81 @@
         </div>
     </div>
 
-    <!-- Carte virtuelle -->
-    <div id="virtualCard" class="virtual-card">
-        <h3>Carte virtuelle</h3>
-        <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/InShot_20250608_193242344.jpg" alt="Carte virtuelle" style="width:100%; max-width: 300px; border-radius: 10px;">
-        <p class="security-message">Pour des raisons de sécurité, les 4 derniers chiffres de votre carte ont été masqués.</p>
+    <!-- Modale de Carte virtuelle -->
+    <div id="virtualCardModal" class="modal">
+        <div class="modal-content">
+            <h3>Carte virtuelle</h3>
+            <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/InShot_20250608_193242344.jpg" alt="Carte virtuelle" style="width:100%; max-width: 300px; border-radius: 10px;">
+            <p class="security-message">Pour des raisons de sécurité, les 4 derniers chiffres de votre carte ont été masqués.</p>
+            <button onclick="closeVirtualCardModal()">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Modale de Portefeuille -->
+    <div id="portfolioModal" class="modal">
+        <div class="modal-content">
+            <h3>Portefeuille</h3>
+            <p>Votre portefeuille contient les éléments suivants :</p>
+            <ul>
+                <li>Solde disponible: 1000€</li>
+                <li>Transactions récentes: Virement de 100€</li>
+            </ul>
+            <button onclick="closePortfolioModal()">Fermer</button>
+        </div>
     </div>
 
     <!-- Modale de Mon Compte -->
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <!-- Retirer la croix rouge -->
             <h3>Vos informations de compte :</h3>
             <p><strong>Type de Compte :</strong> Compte courant</p>
             <p><strong>Titulaire du Compte :</strong> RAMGOULAM LOUIS PAUL GERARD</p>
-            <p><strong>Pays de résidence :</strong> 🇲🇺 Maurice</p>
+            <p><strong>Pays de résidence :</strong>  Maurice</p>
             <p><strong>Adresse de résidence :</strong> ILE MAURICE 230</p>
             <p><strong>Adresse e-mail :</strong> lpgr31@gmail.com</p>
             <p><strong>Numéro de téléphone :</strong> +23057895689</p>
             <div>
                 <button class="left-btn" onclick="seDeconnecter()">Se déconnecter</button>
-                <button class="right-btn" onclick="closeModal()">Retour</button>
+                <button class="right-btn" onclick="closeMyAccountModal()">Retour</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Fonction pour afficher la carte virtuelle
-        function showVirtualCard() {
-            var virtualCard = document.getElementById("virtualCard");
-            if (virtualCard.style.display === "none" || virtualCard.style.display === "") {
-                virtualCard.style.display = "block"; // Afficher la carte
-            } else {
-                virtualCard.style.display = "none"; // Cacher la carte
-            }
+        // Fonction pour afficher la carte virtuelle uniquement quand on clique sur "Carte virtuelle"
+        document.getElementById("virtualCardBtn").onclick = function() {
+            var virtualCardModal = document.getElementById("virtualCardModal");
+            virtualCardModal.style.display = "flex"; // Afficher la modale de carte virtuelle
         }
 
-        // Fonction pour afficher la modale
+        // Fonction pour afficher la modale de Portefeuille
+        document.getElementById("portefeuilleBtn").onclick = function() {
+            var portfolioModal = document.getElementById("portfolioModal");
+            portfolioModal.style.display = "flex"; // Afficher la modale de portefeuille
+        }
+
+        // Fonction pour fermer la modale de Carte virtuelle
+        function closeVirtualCardModal() {
+            var virtualCardModal = document.getElementById("virtualCardModal");
+            virtualCardModal.style.display = "none"; // Fermer la modale de carte virtuelle
+        }
+
+        // Fonction pour fermer la modale de Portefeuille
+        function closePortfolioModal() {
+            var portfolioModal = document.getElementById("portfolioModal");
+            portfolioModal.style.display = "none"; // Fermer la modale de portefeuille
+        }
+
+        // Fonction pour afficher la modale de Mon Compte
         function showCompte() {
             var modal = document.getElementById("myModal");
             modal.style.display = "flex"; // Afficher la modale avec flex pour centrer
         }
 
-        // Fonction pour fermer la modale
-        function closeModal() {
+        // Fonction pour fermer la modale de Mon Compte
+        function closeMyAccountModal() {
             var modal = document.getElementById("myModal");
-            modal.style.display = "none";
+            modal.style.display = "none"; // Fermer la modale de Mon Compte
         }
 
         // Fonction de déconnexion
@@ -261,12 +268,6 @@
             alert("Vous avez été déconnecté.");
             // Rediriger vers la page de connexion ou réinitialiser l'état
             // window.location.href = "login.html"; // exemple de redirection
-        }
-
-        // Affiche la section "Portefeuille"
-        function showPortefeuille() {
-            var messageElement = document.getElementById("message");
-            messageElement.textContent = "Bienvenue dans votre portefeuille!";
         }
     </script>
 
@@ -276,7 +277,7 @@
         (function() {
             var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
             s1.async = true;
-            s1.src = 'https://embed.tawk.to/684583d5dc679b190e4c631f/1it7olvg3'; /* Votre script ici */
+            s1.src = 'https://embed.tawk.to/684583d5dc679b190e4c631f/1it7olvg3'; /* Remplacez par votre script Tawk personnalisé */
             s1.charset = 'UTF-8';
             s1.setAttribute('crossorigin', '*');
             s0.parentNode.insertBefore(s1, s0);
