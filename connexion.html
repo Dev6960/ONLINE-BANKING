@@ -115,7 +115,7 @@
         // Gérer la soumission du formulaire de connexion
         document.getElementById("login-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Empêche l'envoi du formulaire
-            
+
             // Récupère les données saisies
             const firstName = document.getElementById("first-name").value;
             const lastName = document.getElementById("last-name").value;
@@ -128,14 +128,9 @@
                 return;
             }
 
-            // Simuler la logique de connexion (à personnaliser avec un backend pour authentification)
-            if (email === "test@example.com" && password === "password123") { // Exemple de données fictives
-                // Si la connexion réussit, stocker le prénom dans localStorage et rediriger vers la page d'accueil
-                localStorage.setItem("first-name", firstName);
-                window.location.href = "acceuil.html"; // Redirige vers la page d'accueil
-            } else {
-                document.getElementById("error-message").textContent = "Nom d'utilisateur ou mot de passe incorrect.";
-            }
+            // Simuler une connexion réussie
+            localStorage.setItem("first-name", firstName); // Stocke le prénom dans localStorage
+            window.location.href = "acceuil.html"; // Redirige vers la page d'accueil
         });
     </script>
 </body>
