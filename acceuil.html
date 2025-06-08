@@ -149,6 +149,28 @@
             background-color: #d32f2f;
         }
 
+        /* Carte virtuelle - initialement cachée */
+        .virtual-card {
+            display: none;  /* Cacher par défaut */
+            margin-top: 20px;
+            background-color: #007BFF; /* Bleu professionnel */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Message de sécurité en rouge avec fond jaune pâle */
+        .security-message {
+            color: red;  /* Changer la couleur du texte en rouge */
+            font-size: 16px; /* Taille du texte */
+            margin-top: 10px;
+            background-color: #FFF9C4; /* Jaune pâle pour le fond */
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
         /* Positionner la bulle de chat Tawk à droite de l'écran */
         #Tawk_1 {
             position: fixed;
@@ -177,13 +199,20 @@
             <span>Virement</span>
         </div>
         <div>
-            <i class="fas fa-credit-card" title="Carte virtuelle"></i>
+            <i class="fas fa-credit-card" title="Carte virtuelle" onclick="showVirtualCard()"></i>
             <span>Carte virtuelle</span>
         </div>
         <div onclick="showCompte()">
             <i class="fas fa-user-circle" title="Mon compte"></i>
             <span>Mon compte</span>
         </div>
+    </div>
+
+    <!-- Carte virtuelle -->
+    <div id="virtualCard" class="virtual-card">
+        <h3>Carte virtuelle</h3>
+        <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/InShot_20250608_193242344.jpg" alt="Carte virtuelle" style="width:100%; max-width: 300px; border-radius: 10px;">
+        <p class="security-message">Pour des raisons de sécurité, les 4 derniers chiffres de votre carte ont été masqués.</p>
     </div>
 
     <!-- Modale de Mon Compte -->
@@ -205,6 +234,16 @@
     </div>
 
     <script>
+        // Fonction pour afficher la carte virtuelle
+        function showVirtualCard() {
+            var virtualCard = document.getElementById("virtualCard");
+            if (virtualCard.style.display === "none" || virtualCard.style.display === "") {
+                virtualCard.style.display = "block"; // Afficher la carte
+            } else {
+                virtualCard.style.display = "none"; // Cacher la carte
+            }
+        }
+
         // Fonction pour afficher la modale
         function showCompte() {
             var modal = document.getElementById("myModal");
