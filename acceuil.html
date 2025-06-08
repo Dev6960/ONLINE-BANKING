@@ -38,7 +38,7 @@
 <body>
     <div class="container">
         <h1>Bienvenue, <span id="user-name">Utilisateur</span>!</h1>
-        <p>Votre inscription a été réussie. Félicitations !</p>
+        <p id="message">Votre inscription a été réussie. Félicitations !</p>
     </div>
 
     <script>
@@ -47,6 +47,17 @@
         if (firstName) {
             document.getElementById("user-name").textContent = firstName;
         }
+
+        // Vérifie la provenance de la page et modifie le message en conséquence
+        var pageSource = localStorage.getItem("page-source");
+        var messageElement = document.getElementById("message");
+
+        if (pageSource === "connexion") {
+            messageElement.textContent = "Votre connexion a été réussie. Bienvenue!";
+        }
+
+        // Assure-toi de réinitialiser le localStorage après l'affichage
+        localStorage.removeItem("page-source");
     </script>
 </body>
 </html>
