@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Désactivation du zoom global sur la page -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Accueil</title>
     <!-- Inclure Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -11,11 +12,12 @@
             font-family: 'Arial', sans-serif;
             background-color: #f0f4f7;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
             height: 100vh;
             margin: 0;
-            flex-direction: column;
+            padding-top: 20px; /* Espacement du haut de la page */
         }
 
         .container {
@@ -23,8 +25,9 @@
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 400px;
+            padding: 20px; /* Réduction de la taille de la carte */
+            width: 350px; /* Réduction de la largeur de la carte */
+            margin-bottom: 20px; /* Espacement entre le message et les autres éléments */
         }
 
         h1 {
@@ -33,28 +36,30 @@
         }
 
         p {
-            font-size: 18px;
+            font-size: 16px; /* Réduction de la taille du texte */
             color: #333;
         }
 
         /* Style pour les icônes en bas de la page */
         .footer-icons {
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start; /* Aligner les icônes vers la gauche */
             position: fixed;
             bottom: 0;
             width: 100%;
             background-color: #ffffff;
-            padding: 10px 0;
+            padding: 5px 0; /* Réduire la taille du padding pour faire plus de place */
             box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .footer-icons div {
             text-align: center;
+            flex: none; /* Réduire l'espace attribué à chaque icône */
+            margin-left: 10px; /* Ajouter un peu d'espace à gauche entre les icônes */
         }
 
         .footer-icons i {
-            font-size: 30px;
+            font-size: 24px; /* Réduire la taille des icônes */
             color: #4CAF50;
             cursor: pointer;
         }
@@ -66,8 +71,8 @@
         .footer-icons span {
             display: block;
             margin-top: 5px;
-            color: #4CAF50;
-            font-size: 14px;
+            color: red; /* Changer la couleur des noms des icônes en rouge */
+            font-size: 12px; /* Réduire la taille du texte sous les icônes */
         }
 
         /* Style pour la fenêtre modale */
@@ -86,29 +91,29 @@
 
         .modal-content {
             background-color: #fff;
-            padding: 40px;
+            padding: 20px; /* Réduction du padding */
             border-radius: 20px; /* Bord arrondi */
             width: 80%; /* Largeur de la modale */
-            max-width: 800px; /* Limiter la largeur maximale */
-            height: 80%; /* Hauteur de la modale */
+            max-width: 600px; /* Limiter la largeur maximale */
+            height: auto; /* Ajuste la hauteur */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Ombre douce */
-            overflow: hidden; /* Empêche le défilement */
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between; /* Pour espacer le contenu */
+            overflow-y: auto; /* Permet le défilement si le contenu dépasse la hauteur de la modale */
         }
 
         .modal-content h3 {
             color: #4CAF50;
             margin-bottom: 20px;
-            font-size: 26px;
+            font-size: 24px; /* Réduction de la taille du titre */
             font-weight: bold;
             text-align: center;
         }
 
         .modal-content p {
-            font-size: 18px;
+            font-size: 16px; /* Réduction de la taille du texte */
             color: #333;
             margin: 10px 0;
             line-height: 1.6; /* Espacement entre les lignes */
@@ -124,7 +129,7 @@
             background-color: #f44336;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 20px;
             margin-top: 20px;
             width: 48%;
             cursor: pointer;
@@ -144,19 +149,18 @@
             background-color: #d32f2f;
         }
 
-        /* Ajustement de la position de la bulle de chat */
+        /* Positionner la bulle de chat Tawk à droite de l'écran */
         #Tawk_1 {
             position: fixed;
-            bottom: 140px; /* Espacement suffisant pour éviter que la bulle cache l'icône "Mon compte" */
-        }
-
-        /* Espace pour l'icône "Mon compte" pour qu'elle ne soit pas cachée */
-        .footer-icons div:last-child {
-            margin-bottom: 60px; /* Espacement pour l'icône "Mon compte" */
+            top: 20px;
+            left: auto;  /* Mettre à gauche auto pour se placer à droite */
+            right: 20px; /* Positionner la bulle à 20px à droite */
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
+    <!-- Message Bienvenue -->
     <div class="container">
         <h1>Bienvenue, <span id="user-name">Utilisateur</span>!</h1>
         <p id="message">Votre inscription a été réussie. Félicitations !</p>
