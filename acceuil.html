@@ -37,8 +37,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenue sur ONLINE BANKING</h1>
+        <h1>Bienvenue, <span id="user-name">Utilisateur</span>!</h1>
         <p>Votre inscription a été réussie. Félicitations !</p>
     </div>
+
+    <script>
+        // Récupère le prénom stocké dans localStorage et l'affiche
+        var firstName = localStorage.getItem("first-name");
+        if (firstName) {
+            document.getElementById("user-name").textContent = firstName;
+        }
+    </script>
 </body>
 </html>
