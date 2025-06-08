@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Virement International</title>
-    <!-- Inclure Font Awesome pour les icônes (facultatif) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f6f9; /* Couleur professionnelle claire */
+            background-color: #f4f6f9;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            min-height: 100vh; /* Assure que la hauteur minimum est celle de la fenêtre */
+            min-height: 100vh;
             margin: 0;
-            padding: 20px; /* Ajout d'un petit espacement autour de la page */
-            overflow-y: auto; /* Permet le défilement vertical si nécessaire */
+            padding: 20px;
+            overflow-y: auto;
         }
 
         .container {
@@ -52,7 +51,7 @@
             padding: 12px;
             margin: 5px 0;
             border: 1px solid #ccc;
-            border-radius: 6px; /* Coins arrondis pour les champs de formulaire */
+            border-radius: 6px;
             box-sizing: border-box;
         }
 
@@ -68,7 +67,7 @@
             padding: 12px 20px;
             cursor: pointer;
             font-size: 16px;
-            border-radius: 30px; /* Coins du bouton arrondis */
+            border-radius: 30px;
             transition: background-color 0.3s;
         }
 
@@ -76,202 +75,286 @@
             background-color: #45a049;
         }
 
-        /* Style pour le modal */
-        #modal {
+        #codeModal, #progressModal, #alertModal, #blockModal {
             display: none;
             position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
+            z-index: 2;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
             width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        .modal-content {
+        .modal-content, .alert-content, .progress-container, .block-content {
             background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            margin: 15% auto;
-            width: 60%;
+            border-radius: 10px;
             text-align: center;
         }
 
-        .close {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            float: right;
+        .modal-content input, .alert-content input {
+            width: 80%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
+        .modal-content button, .alert-content button, .block-content button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-content button:hover, .alert-content button:hover, .block-content button:hover {
+            background-color: #45a049;
         }
 
         .progress-bar {
             width: 100%;
-            height: 20px;
-            background-color: #ddd;
+            background-color: #f3f3f3;
             border-radius: 10px;
-        }
-
-        .progress-bar-filled {
-            height: 100%;
-            background-color: #4CAF50;
-            border-radius: 10px;
-            width: 0;
-        }
-
-        .status-icon {
-            font-size: 50px;
             margin-top: 20px;
         }
 
-        .status-icon.success {
+        .progress-bar div {
+            height: 20px;
+            background-color: #4CAF50;
+            width: 0;
+            border-radius: 10px;
+        }
+
+        .result-icon {
+            margin-top: 20px;
+            font-size: 30px;
+        }
+
+        .result-icon.success {
             color: green;
         }
 
-        .status-icon.failure {
+        .result-icon.fail {
             color: red;
         }
+
+        .button-back {
+            margin-top: 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-back:hover {
+            background-color: #e53935;
+        }
+
+        .alert-message {
+            margin-bottom: 20px;
+            color: red;
+        }
+
+        .blocked-message {
+            color: red;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .blocked-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="formContainer">
         <h2>Effectuer un Virement</h2>
 
         <form id="virementForm">
             <div class="form-group">
-                <label for="solde">Solde disponible</label>
-                <input type="text" id="solde" name="solde" value="0,00 Rs" disabled>
-            </div>
-
-            <div class="form-group">
                 <label for="montant">Montant du virement</label>
                 <input type="number" id="montant" name="montant" placeholder="0.00 Rs" required>
             </div>
-
-            <div class="form-group">
-                <label for="beneficiaire">Nom du bénéficiaire</label>
-                <input type="text" id="beneficiaire" name="beneficiaire" placeholder="Nom du bénéficiaire" required>
-            </div>
-
-            <div class="form-group">
-                <label for="iban">IBAN / Numéro de Compte</label>
-                <input type="text" id="iban" name="iban" placeholder="IBAN / Numéro de Compte" required>
-            </div>
-
-            <div class="form-group">
-                <label for="code_banque">Code Banque (BIC / SWIFT)</label>
-                <input type="text" id="code_banque" name="code_banque" placeholder="Code Banque (BIC / SWIFT)" required>
-            </div>
-
-            <div class="form-group">
-                <label for="nom_banque">Nom de la Banque</label>
-                <input type="text" id="nom_banque" name="nom_banque" placeholder="Nom de la Banque" required>
-            </div>
-
-            <div class="form-group">
-                <label for="raison">Raison du virement</label>
-                <input type="text" id="raison" name="raison" placeholder="Raison du virement" required>
-            </div>
-
             <div class="button-container">
-                <input type="button" value="Continuer" onclick="demanderCode()" id="continuerButton" disabled>
+                <input type="button" value="Continuer" onclick="demanderCode()" id="continuerButton">
             </div>
         </form>
+
+        <!-- Message de blocage du compte après plusieurs tentatives -->
+        <div id="blockedMessage" class="blocked-container">
+            <div class="blocked-message">Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.</div>
+        </div>
+
+        <!-- Bouton retour vers la page d'accueil -->
+        <div class="button-container">
+            <button class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
+        </div>
     </div>
 
-    <!-- Modal -->
-    <div id="modal">
+    <!-- Modal pour saisir le code -->
+    <div id="codeModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Virement en cours</h2>
-            <p>Décompte du virement : <span id="virementStatus">0%</span></p>
+            <h3>Saisissez votre code de confirmation</h3>
+            <input type="text" id="codeUtilisateur" placeholder="Entrez le code">
+            <button onclick="verifierCode()">Valider</button>
+            <button class="button-back" onclick="revenirFormulaire()">Retour au formulaire</button>
+        </div>
+    </div>
+
+    <!-- Modal pour la progression du virement -->
+    <div id="progressModal" class="modal">
+        <div class="progress-container">
+            <h3>Progression du virement</h3>
             <div class="progress-bar">
-                <div id="progressBar" class="progress-bar-filled"></div>
+                <div id="progressBar"></div>
             </div>
-            <div id="statusIcon" class="status-icon"></div>
+            <div class="result-icon" id="resultIcon"></div>
+            <button class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
+        </div>
+    </div>
+
+    <!-- Modal d'alerte -->
+    <div id="alertModal" class="modal">
+        <div class="alert-content">
+            <div class="alert-message" id="alertMessage"></div>
+            <button onclick="fermerAlert()">OK</button>
+        </div>
+    </div>
+
+    <!-- Modal de blocage du compte -->
+    <div id="blockModal" class="modal">
+        <div class="block-content">
+            <div class="blocked-message">Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.</div>
+            <button onclick="fermerBlocage()">OK</button>
         </div>
     </div>
 
     <script>
         const codeStocke = "TEST226FELIX";
         let tentatives = 0;
+        let objectif = 100; // Objectif de progression (modifiable)
+        let emailBloque = "user@domain.com"; // L'email bloqué pour cet exemple
+        let emailUtilisateur = "user@domain.com"; // Email récupéré de `connexion.html`
 
-        // Vous pouvez définir ici si le virement doit atteindre 50% ou 100%
-        const objectifVirement = 100;  // Changez cela à 50 pour arrêter à 50%
+        // Cette fonction est appelée lorsque l'utilisateur clique sur "Continuer"
+        function demanderCode() {
+            // Si l'email est bloqué, afficher un message et ne pas continuer
+            if (emailUtilisateur === emailBloque) {
+                afficherAlert("Votre compte est bloqué. Veuillez contacter l'assistance.");
+                return;
+            }
 
-        // Active le bouton "Continuer" seulement si tous les champs sont remplis
-        document.querySelectorAll("input").forEach(input => {
-            input.addEventListener("input", checkFormCompletion);
-        });
-
-        function checkFormCompletion() {
-            const allFilled = Array.from(document.querySelectorAll("input")).every(input => input.value !== "");
-            document.getElementById("continuerButton").disabled = !allFilled;
+            document.getElementById("formContainer").style.display = "none";  // Masquer le formulaire
+            document.getElementById("codeModal").style.display = "block";  // Afficher la modal pour saisir le code
+            document.getElementById("codeModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
         }
 
-        function demanderCode() {
-            const codeUtilisateur = prompt("Entrez le code pour finaliser le virement");
-
+        // Vérifier le code de confirmation
+        function verifierCode() {
+            const codeUtilisateur = document.getElementById("codeUtilisateur").value;
             if (codeUtilisateur === codeStocke) {
-                ouvrirModal();
-                effectuerVirement(objectifVirement);  // Le virement s'arrêtera selon l'objectif choisi (50 ou 100%)
+                document.getElementById("codeModal").style.display = "none";
+                ouvrirModalProgression();
             } else {
                 tentatives++;
                 if (tentatives < 3) {
-                    alert("Code incorrect. Tentative " + tentatives + "/3");
+                    afficherAlert("Code incorrect. Tentative " + tentatives + "/3");
                 } else {
-                    alert("Code incorrect. Votre compte sera bloqué après 3 tentatives.");
+                    afficherAlert("Vous avez échoué 3 fois. Votre compte sera bloqué.");
+                    document.getElementById("codeModal").style.display = "none";
+                    document.getElementById("blockModal").style.display = "block"; // Afficher le modal de blocage
+                    document.getElementById("formContainer").style.display = "none"; // Masquer le formulaire
                 }
             }
         }
 
-        function ouvrirModal() {
-            document.getElementById("modal").style.display = "block";
+        // Ouvrir la modal de progression du virement
+        function ouvrirModalProgression() {
+            document.getElementById("progressModal").style.display = "block";
+            document.getElementById("progressModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+            progressionVirement();
         }
 
-        function closeModal() {
-            document.getElementById("modal").style.display = "none";
-        }
+        // Fonction pour gérer la progression aléatoire du virement
+        function progressionVirement() {
+            let currentProgress = 0;
+            const progressBar = document.getElementById("progressBar");
+            const resultIcon = document.getElementById("resultIcon");
 
-        function effectuerVirement(pourcentageFinal) {
-            let pourcentage = getRandomPercentage();
             const interval = setInterval(() => {
-                // Incrément aléatoire entre 2 et 5 à chaque intervalle
-                pourcentage += getRandomIncrement();
-
-                if (pourcentage >= pourcentageFinal) {
-                    pourcentage = pourcentageFinal; // On s'assure que le pourcentage ne dépasse pas l'objectif
+                if (currentProgress < objectif) {
+                    const increment = Math.floor(Math.random() * 4) + 1;  // Valeur aléatoire entre 1 et 4
+                    currentProgress += increment;
+                    if (currentProgress > objectif) currentProgress = objectif;
+                    progressBar.style.width = currentProgress + "%";
+                } else {
                     clearInterval(interval);
-                    document.getElementById("statusIcon").innerHTML = 
-                        '<i class="fas fa-check-circle success"></i>';
-                    alert("Le virement a réussi à " + pourcentage + "%.");
-                    closeModal();
+                    if (currentProgress === 100) {
+                        resultIcon.className = "result-icon success";
+                        resultIcon.innerHTML = "✔️ Transfert réussi!";
+                    } else {
+                        resultIcon.className = "result-icon fail";
+                        resultIcon.innerHTML = "❌ Transfert échoué!";
+                    }
                 }
-
-                document.getElementById("virementStatus").textContent = pourcentage + "%";
-                document.getElementById("progressBar").style.width = pourcentage + "%";
-            }, 1000); // 1 seconde entre chaque incrément
+            }, 1000);  // Met à jour la barre toutes les secondes
         }
 
-        // Fonction pour obtenir un pourcentage de départ aléatoire
-        function getRandomPercentage() {
-            return Math.floor(Math.random() * 10) + 2; // Pourcentage initial entre 2 et 10
+        // Revenir au formulaire depuis les modals
+        function revenirFormulaire() {
+            document.getElementById("formContainer").style.display = "block";  // Afficher le formulaire
+            document.getElementById("codeModal").style.display = "none";  // Masquer la modal de code
+            document.getElementById("progressModal").style.display = "none";  // Masquer la modal de progression
+            document.getElementById("blockedMessage").style.display = "none"; // Masquer le message de blocage
         }
 
-        // Fonction pour obtenir un incrément aléatoire entre 2 et 5
-        function getRandomIncrement() {
-            return Math.floor(Math.random() * 4) + 2; // Incrément aléatoire entre 2 et 5
+        // Afficher un message d'alerte dans un modal
+        function afficherAlert(message) {
+            document.getElementById("alertMessage").innerText = message;
+            document.getElementById("alertModal").style.display = "block";
+            document.getElementById("alertModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+        }
+
+        // Fermer le modal d'alerte
+        function fermerAlert() {
+            document.getElementById("alertModal").style.display = "none";
+        }
+
+        // Fermer le modal de blocage et rediriger vers l'accueil
+        function fermerBlocage() {
+            document.getElementById("blockModal").style.display = "none";
+            redirectToAccueil();
+        }
+
+        // Rediriger vers la page d'accueil
+        function redirectToAccueil() {
+            window.location.href = 'accueil.html';  // Redirection vers accueil.html
+        }
+
+        // Générer une couleur aléatoire
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
     </script>
 
 </body>
-                  </html>
-                  
+</html>
