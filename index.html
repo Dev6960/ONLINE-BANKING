@@ -209,6 +209,9 @@
                 return;
             }
 
+            // Enregistre la provenance dans le localStorage
+            localStorage.setItem("page-source", "index");
+
             // Afficher la boîte de confirmation
             document.getElementById("confirmation-dialog").style.display = "flex";
         });
