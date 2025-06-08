@@ -244,15 +244,17 @@
     </div>
 
     <script>
-        const codeStocke = "TEST226FELIX";
-        let tentatives = 0;
-        let objectif = 100; // Objectif de progression (modifiable)
-        let emailBloque = "user@domain.com"; // L'email bloqué pour cet exemple
-        let emailUtilisateur = "user@domain.com"; // Email récupéré de `connexion.html`
+        // Exemple de l'email bloqué (à simuler avec un email récupéré dans la session)
+        const emailBloque = "user@domain.com"; // Email bloqué dans la base de données (exemple)
+        const emailUtilisateur = "user@domain.com"; // Email de l'utilisateur connecté (exemple)
 
-        // Cette fonction est appelée lorsque l'utilisateur clique sur "Continuer"
+        // Tentatives de validation du code
+        let tentatives = 0;
+        const codeStocke = "TEST226FELIX"; // Code valide
+        let objectif = 100; // Objectif de progression (modifiable)
+
+        // Fonction appelée lorsque l'utilisateur clique sur "Continuer"
         function demanderCode() {
-            // Si l'email est bloqué, afficher un message et ne pas continuer
             if (emailUtilisateur === emailBloque) {
                 afficherAlert("Votre compte est bloqué. Veuillez contacter l'assistance.");
                 return;
@@ -263,7 +265,7 @@
             document.getElementById("codeModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
         }
 
-        // Vérifier le code de confirmation
+        // Vérification du code de confirmation
         function verifierCode() {
             const codeUtilisateur = document.getElementById("codeUtilisateur").value;
             if (codeUtilisateur === codeStocke) {
@@ -289,7 +291,7 @@
             progressionVirement();
         }
 
-        // Fonction pour gérer la progression aléatoire du virement
+        // Gestion de la progression du virement
         function progressionVirement() {
             let currentProgress = 0;
             const progressBar = document.getElementById("progressBar");
@@ -314,7 +316,7 @@
             }, 1000);  // Met à jour la barre toutes les secondes
         }
 
-        // Revenir au formulaire depuis les modals
+        // Revenir au formulaire
         function revenirFormulaire() {
             document.getElementById("formContainer").style.display = "block";  // Afficher le formulaire
             document.getElementById("codeModal").style.display = "none";  // Masquer la modal de code
