@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
+    <!-- Inclure Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,6 +15,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
         }
 
         .container {
@@ -33,6 +36,124 @@
             font-size: 18px;
             color: #333;
         }
+
+        /* Style pour les icônes en bas de la page */
+        .footer-icons {
+            display: flex;
+            justify-content: space-around;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 10px 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-icons div {
+            text-align: center;
+        }
+
+        .footer-icons i {
+            font-size: 30px;
+            color: #4CAF50;
+            cursor: pointer;
+        }
+
+        .footer-icons i:hover {
+            color: #333;
+        }
+
+        .footer-icons span {
+            display: block;
+            margin-top: 5px;
+            color: #4CAF50;
+            font-size: 14px;
+        }
+
+        /* Style pour la fenêtre modale */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Fond semi-transparent */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 20px; /* Bord arrondi */
+            width: 80%; /* Largeur de la modale */
+            max-width: 800px; /* Limiter la largeur maximale */
+            height: 80%; /* Hauteur de la modale */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Ombre douce */
+            overflow: hidden; /* Empêche le défilement */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pour espacer le contenu */
+        }
+
+        .modal-content h3 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+            line-height: 1.6; /* Espacement entre les lignes */
+            text-align: left; /* Alignement à gauche */
+        }
+
+        /* Suppression de la croix rouge de la modale */
+        .close-btn {
+            display: none; /* Masquer le bouton de fermeture */
+        }
+
+        .modal-content button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 20px;
+            width: 48%;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .modal-content .left-btn {
+            float: left;
+        }
+
+        .modal-content .right-btn {
+            float: right;
+        }
+
+        .modal-content button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Ajustement de la position de la bulle de chat */
+        #Tawk_1 {
+            position: fixed;
+            bottom: 140px; /* Espacement suffisant pour éviter que la bulle cache l'icône "Mon compte" */
+        }
+
+        /* Espace pour l'icône "Mon compte" pour qu'elle ne soit pas cachée */
+        .footer-icons div:last-child {
+            margin-bottom: 60px; /* Espacement pour l'icône "Mon compte" */
+        }
     </style>
 </head>
 <body>
@@ -41,23 +162,69 @@
         <p id="message">Votre inscription a été réussie. Félicitations !</p>
     </div>
 
+    <!-- Icônes en bas -->
+    <div class="footer-icons">
+        <div onclick="showPortefeuille()">
+            <i class="fas fa-wallet" title="Portefeuille"></i>
+            <span>Portefeuille</span>
+        </div>
+        <div>
+            <i class="fas fa-exchange-alt" title="Virement"></i>
+            <span>Virement</span>
+        </div>
+        <div>
+            <i class="fas fa-credit-card" title="Carte virtuelle"></i>
+            <span>Carte virtuelle</span>
+        </div>
+        <div onclick="showCompte()">
+            <i class="fas fa-user-circle" title="Mon compte"></i>
+            <span>Mon compte</span>
+        </div>
+    </div>
+
+    <!-- Modale de Mon Compte -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <!-- Retirer la croix rouge -->
+            <h3>Vos informations de compte :</h3>
+            <p><strong>Type de Compte :</strong> Compte courant</p>
+            <p><strong>Titulaire du Compte :</strong> RAMGOULAM LOUIS PAUL GERARD</p>
+            <p><strong>Pays de résidence :</strong> 🇲🇺 Maurice</p>
+            <p><strong>Adresse de résidence :</strong> ILE MAURICE 230</p>
+            <p><strong>Adresse e-mail :</strong> lpgr31@gmail.com</p>
+            <p><strong>Numéro de téléphone :</strong> +23057895689</p>
+            <div>
+                <button class="left-btn" onclick="seDeconnecter()">Se déconnecter</button>
+                <button class="right-btn" onclick="closeModal()">Retour</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Récupère le prénom stocké dans localStorage et l'affiche
-        var firstName = localStorage.getItem("first-name");
-        if (firstName) {
-            document.getElementById("user-name").textContent = firstName;
+        // Fonction pour afficher la modale
+        function showCompte() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "flex"; // Afficher la modale avec flex pour centrer
         }
 
-        // Vérifie la provenance de la page et modifie le message en conséquence
-        var pageSource = localStorage.getItem("page-source");
-        var messageElement = document.getElementById("message");
-
-        if (pageSource === "connexion") {
-            messageElement.textContent = "Votre connexion a été réussie. Bienvenue!";
+        // Fonction pour fermer la modale
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
         }
 
-        // Assure-toi de réinitialiser le localStorage après l'affichage
-        localStorage.removeItem("page-source");
+        // Fonction de déconnexion
+        function seDeconnecter() {
+            alert("Vous avez été déconnecté.");
+            // Rediriger vers la page de connexion ou réinitialiser l'état
+            // window.location.href = "login.html"; // exemple de redirection
+        }
+
+        // Affiche la section "Portefeuille"
+        function showPortefeuille() {
+            var messageElement = document.getElementById("message");
+            messageElement.textContent = "Bienvenue dans votre portefeuille!";
+        }
     </script>
 
     <!-- Start of Tawk.to Script -->
@@ -66,7 +233,7 @@
         (function() {
             var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
             s1.async = true;
-            s1.src = 'https://embed.tawk.to/684588e7994a19190e2690da/1it7pti71';
+            s1.src = 'https://embed.tawk.to/684583d5dc679b190e4c631f/1it7olvg3'; /* Votre script ici */
             s1.charset = 'UTF-8';
             s1.setAttribute('crossorigin', '*');
             s0.parentNode.insertBefore(s1, s0);
