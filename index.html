@@ -80,6 +80,12 @@
             color: #4CAF50;
             text-decoration: none;
         }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -98,23 +104,64 @@
             <label for="email">Adresse e-mail:</label>
             <input type="email" id="email" name="email" required>
 
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm-password">Confirmer le mot de passe:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+
             <button type="submit">S'inscrire</button>
         </form>
         <div class="footer">
             <p>Déjà un compte ? <a href="connexion.html">Se connecter</a></p>
         </div>
+        <div id="error-message" class="error-message"></div>
     </div>
 
     <script>
-        // Lorsque le formulaire est soumis, rediriger vers acceuil.html
+        // Fonction pour vérifier si l'utilisateur a plus de 18 ans
+        function isAbove18(dateOfBirth) {
+            const birthDate = new Date(dateOfBirth);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const month = today.getMonth() - birthDate.getMonth();
+
+            if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+                return age - 1;
+            }
+            return age;
+        }
+
         document.getElementById("signup-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Empêche l'envoi du formulaire
             
-            // Récupère le prénom et le stocke dans localStorage
-            var firstName = document.getElementById("first-name").value;
+            const firstName = document.getElementById("first-name").value;
+            const lastName = document.getElementById("last-name").value;
+            const dob = document.getElementById("dob").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+
+            // Vérifier si l'utilisateur a plus de 18 ans
+            if (isAbove18(dob) < 18) {
+                document.getElementById("error-message").textContent = "Vous devez avoir au moins 18 ans pour vous inscrire.";
+                return;
+            }
+
+            // Vérifier si le mot de passe et la confirmation sont identiques
+            if (password !== confirmPassword) {
+                document.getElementById("error-message").textContent = "Les mots de passe ne correspondent pas.";
+                return;
+            }
+
+            // Vérification que tous les champs sont remplis
+            if (!firstName || !lastName || !dob || !email || !password || !confirmPassword) {
+                document.getElementById("error-message").textContent = "Veuillez remplir tous les champs.";
+                return;
+            }
+
+            // Si tout est valide, stocker le prénom et rediriger
             localStorage.setItem("first-name", firstName);
-            
-            // Redirige vers la page d'accueil
             window.location.href = "acceuil.html";
         });
     </script>
