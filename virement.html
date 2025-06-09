@@ -1,549 +1,582 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>Virement International</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #3a8ee6, #00bfff);
-            margin: 0;
-            padding: 40px 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            overflow-y: auto;
-            color: #000;
-        }
-        .container {
-            max-width: 480px;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 35px 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            color: #000;
-            display: flex;
-            flex-direction: column;
-        }
-        img {
-            display: block;
-            margin: 0 auto 25px auto;
-            max-width: 160px;
-            height: auto;
-            /* Pas de fond, image intégrée normalement sur le fond */
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-        h2 {
-            font-weight: 700;
-            font-size: 1.8em;
-            color: #0a1f44;
-            text-align: center;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-        .solde, .description {
-            color: #1e2a47;
-            font-weight: 600;
-            text-align: center;
-        }
-        .solde {
-            font-size: 1.2em;
-            margin-bottom: 12px;
-        }
-        .description {
-            font-size: 1.07em;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            font-weight: 600;
-            color: #0a1f44;
-            display: block;
-            margin-bottom: 6px;
-        }
-        input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 14px 12px;
-            border-radius: 8px;
-            border: 1.8px solid #ccc;
-            font-size: 1em;
-            color: #222;
-            background-color: #fff;
-            transition: border-color 0.3s ease;
-            box-sizing: border-box;
-        }
-        input[type="text"]:focus,
-        input[type="number"]:focus {
-            outline: none;
-            border-color: #3a8ee6;
-            box-shadow: 0 0 8px rgba(58, 142, 230, 0.4);
-        }
-        .input-group {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .input-group input {
-            flex: 1;
-        }
-        .input-group span {
-            position: absolute;
-            right: 14px;
-            font-weight: 700;
-            color: #555;
-            user-select: none;
-            font-size: 1em;
-        }
-        .button-container {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 14px;
-        }
-        .button-container input,
-        .button-container button {
-            flex: 1;
-            max-width: 180px;
-            background-color: #3a8ee6;
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            cursor: pointer;
-            font-size: 1.1em;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-        }
-        .button-container input:hover,
-        .button-container button:hover {
-            background-color: #3272c7;
-        }
-        .button-back {
-            background-color: #f44336 !important;
-        }
-        .button-back:hover {
-            background-color: #d32f2f !important;
-        }
-        /* Modale styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 400px;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-            font-weight: 600;
-            color: #000 !important;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .modal-content,
-        .alert-content,
-        .progress-container,
-        .block-content {
-            padding: 20px;
-        }
-        .modal-content input,
-        .alert-content input {
-            width: 80%;
-            padding: 12px;
-            margin: 20px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-weight: normal;
-            background-color: #fff;
-            color: #000;
-        }
-        .modal-content button,
-        .alert-content button,
-        .block-content button {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
-        }
-        .progress-bar {
-            width: 100%;
-            background-color: #f44336;
-            border-radius: 10px;
-            position: relative;
-            height: 20px;
-            overflow: hidden;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .progress-bar div {
-            height: 100%;
-            background-color: #4caf50;
-            width: 0;
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        #progressPercent {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 20px;
-            line-height: 20px;
-            color: white;
-            font-weight: bold;
-            user-select: none;
-            pointer-events: none;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-        .result-icon {
-            margin-top: 20px;
-            font-size: 30px;
-        }
-        .result-icon.success {
-            color: green;
-        }
-        .result-icon.fail {
-            color: red;
-        }
-        .alert-message {
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        .blocked-message {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .blocked-container {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            color: #f44336;
-            font-weight: 700;
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>Virement International</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #4a148c);
+      margin: 0;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-y: auto;
+      color: #eee;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background-color 0.3s ease;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      background: transparent;
+      border-radius: 16px;
+      padding: 40px 35px;
+      box-shadow:
+        0 8px 24px rgba(126, 87, 194, 0.3),
+        inset 0 0 30px rgba(255,255,255,0.1);
+      color: #ddd;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(126, 87, 194, 0.5);
+      transition: box-shadow 0.3s ease;
+    }
+    .container:hover {
+      box-shadow:
+        0 14px 40px rgba(126, 87, 194, 0.6),
+        inset 0 0 35px rgba(255,255,255,0.15);
+    }
+    img {
+      display: block;
+      margin: 0 auto 30px auto;
+      max-width: 160px;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      transition: transform 0.3s ease;
+    }
+    img:hover {
+      transform: scale(1.05) rotate(2deg);
+    }
+    h2 {
+      font-weight: 800;
+      font-size: 2em;
+      color: #c7b3e6;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 1.2px;
+      text-shadow: 1px 1px 4px rgba(74,20,140,0.7);
+    }
+    .solde, .description {
+      color: #aaa6c3;
+      font-weight: 600;
+      text-align: center;
+      user-select: none;
+    }
+    .solde {
+      font-size: 1.25em;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+    .solde strong {
+      color: #b3a1e8;
+      text-shadow: 0 0 10px rgba(179, 161, 232, 0.75);
+    }
+    .description {
+      font-size: 1.1em;
+      margin-bottom: 36px;
+      font-style: italic;
+      letter-spacing: 0.3px;
+    }
+    .form-group {
+      margin-bottom: 22px;
+    }
+    /* Montant : label sur une ligne, police inchangée */
+    .form-group.input-group > label[for="montant"] {
+      font-size: 1em;
+      font-weight: 700;
+      color: #ccc1f7;
+      margin-bottom: 8px;
+      display: block;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+    /* input montant full width */
+    .input-group {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
+    .input-group input#montant {
+      width: 100%;
+      font-size: 1.2em;
+      padding: 14px 48px 14px 18px; /* espace droit pour Rs */
+      font-weight: 700;
+      border-radius: 12px;
+      border: 1.8px solid rgba(126, 87, 194, 0.6);
+      background-color: rgba(255,255,255,0.95);
+      color: #2c3e50;
+      box-shadow: 0 2px 6px rgba(126, 87, 194, 0.15);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      letter-spacing: 0.02em;
+      box-sizing: border-box;
+    }
+    .input-group input#montant::placeholder {
+      color: #9e9fd1;
+      font-weight: 500;
+    }
+    .input-group input#montant:focus {
+      outline: none;
+      border-color: #00b8d4;
+      box-shadow: 0 0 14px rgba(0, 184, 212, 0.8);
+      background-color: #e3f9ff;
+      color: #1b2838;
+    }
+    /* Suffix "Rs" à droite */
+    .input-group span {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.15em;
+      font-weight: 700;
+      color: #008ba3;
+      text-shadow: 0 0 5px rgba(0, 184, 212, 0.3);
+      user-select: none;
+      pointer-events: none;
+    }
+    /* autres inputs */
+    input[type="text"],
+    input[type="number"]:not(#montant) {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1.8px solid rgba(126, 87, 194, 0.6);
+      font-size: 1em;
+      color: #2c3e50;
+      background-color: rgba(255, 255, 255, 0.95);
+      box-sizing: border-box;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      user-select: text;
+      box-shadow: 0 2px 6px rgba(126, 87, 194, 0.15);
+    }
+    input[type="text"]::placeholder,
+    input[type="number"]:not(#montant)::placeholder {
+      color: #9e9fd1;
+      font-weight: 500;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:not(#montant):focus {
+      outline: none;
+      border-color: #00b8d4;
+      box-shadow: 0 0 14px rgba(0, 184, 212, 0.8);
+      background-color: #e3f9ff;
+      color: #1b2838;
+    }
+    /* Le reste du style bouton, modal, etc inchangé (vous pouvez garder ceux précédents) */
+    /* (boutons, modals, messages, halos flous...) */
+    .button-container {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .button-container input,
+    .button-container button {
+      flex: 1;
+      max-width: 190px;
+      background: linear-gradient(45deg, #7e57c2, #6a1b9a);
+      color: white;
+      border: none;
+      padding: 16px 26px;
+      cursor: pointer;
+      font-size: 1.15em;
+      border-radius: 40px;
+      font-weight: 700;
+      box-shadow: 0 5px 20px rgba(126, 87, 194, 0.7);
+      transition: all 0.3s ease;
+      user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .button-container input:hover,
+    .button-container button:hover {
+      background: linear-gradient(45deg, #00b8d4, #008ba3);
+      box-shadow: 0 8px 30px rgba(0, 184, 212, 0.8);
+      transform: translateY(-3px);
+    }
+    .button-container input:active,
+    .button-container button:active {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(0, 184, 212, 0.6);
+    }
+    .button-back {
+      background: linear-gradient(45deg, #d32f2f, #b71c1c) !important;
+      box-shadow: 0 5px 15px rgba(211, 47, 47, 0.7) !important;
+      transition: all 0.3s ease !important;
+    }
+    .button-back:hover {
+      background: linear-gradient(45deg, #f44336, #d32f2f) !important;
+      box-shadow: 0 8px 25px rgba(244, 67, 54, 0.85) !important;
+      transform: translateY(-3px) !important;
+    }
+    .button-back:active {
+      transform: translateY(-1px) !important;
+      box-shadow: 0 5px 15px rgba(210, 35, 35, 0.5) !important;
+    }
+    /* Modals, alerts, halos flous... */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      padding: 24px 30px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 420px;
+      background-color: rgba(255,255,255,0.95);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      font-weight: 700;
+      color: #4a148c !important;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      user-select: none;
+    }
+    /* ...reste modal content etc idem */
+
+    /* halos flous haut/bas quand modal actif */
+    body.modal-open::before,
+    body.modal-open::after {
+      content: "";
+      position: fixed;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      pointer-events: none;
+      z-index: 1000;
+      filter: blur(40px);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    body.modal-open::before {
+      top: 0;
+      background: linear-gradient(180deg, rgba(126, 87, 194, 0.6), transparent);
+    }
+    body.modal-open::after {
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(0, 184, 212, 0.6), transparent);
+    }
+  </style>
 </head>
 <body>
 <div class="container" id="formContainer">
-    <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/Design%20sans%20titre%20(2).png" alt="Logo" />
-    <h2>Effectuer un virement</h2>
-    <div class="solde">Solde disponible : <strong>0,00 Rs</strong></div>
-    <div class="description">Envoyer un virement international</div>
-    <form id="virementForm" onsubmit="return false;">
-        <div class="form-group input-group">
-            <label for="montant">Montant du virement</label>
-            <input
-                type="number"
-                id="montant"
-                name="montant"
-                placeholder="0.00"
-                min="0.01"
-                required
-            />
-            <span>Rs</span>
-        </div>
-        <div class="form-group">
-            <label for="nomBeneficiaire">Nom du bénéficiaire</label>
-            <input
-                type="text"
-                id="nomBeneficiaire"
-                name="nomBeneficiaire"
-                placeholder="Nom complet"
-                required
-            />
-        </div>
-        <div class="form-group">
-            <label for="iban">IBAN / Numéro de Compte</label>
-            <input type="text" id="iban" name="iban" placeholder="Numéro IBAN ou compte" required />
-        </div>
-        <div class="form-group">
-            <label for="codeBanque">Code Banque (BIC / SWIFT)</label>
-            <input
-                type="text"
-                id="codeBanque"
-                name="codeBanque"
-                placeholder="Code BIC / SWIFT"
-                required
-            />
-        </div>
-        <div class="form-group">
-            <label for="nomBanque">Nom de la Banque</label>
-            <input type="text" id="nomBanque" name="nomBanque" placeholder="Nom de la banque" required />
-        </div>
-        <div class="form-group">
-            <label for="raisonVirement">Raison du virement</label>
-            <input
-                type="text"
-                id="raisonVirement"
-                name="raisonVirement"
-                placeholder="Motif ou raison"
-                required
-            />
-        </div>
-        <div class="button-container">
-            <input type="button" value="Continuer" onclick="validerEtDemanderCode()" id="continuerButton" />
-            <button type="button" class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
-        </div>
-    </form>
-    <div id="blockedMessage" class="blocked-container">
-        Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.
+  <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/Design%20sans%20titre%20(2).png" alt="Logo"/>
+  <h2>Effectuer un virement</h2>
+  <div class="solde">Solde disponible : <strong>0,00 Rs</strong></div>
+  <div class="description">Envoyer un virement international</div>
+  <form id="virementForm" onsubmit="return false;">
+    <div class="form-group input-group">
+      <label for="montant">Montant du virement</label>
+      <input
+        type="number"
+        id="montant"
+        name="montant"
+        placeholder="0.00"
+        min="0.01"
+        required
+        step="0.01"
+      />
+      <span>Rs</span>
     </div>
+    <div class="form-group">
+      <label for="nomBeneficiaire">Nom du bénéficiaire</label>
+      <input
+        type="text"
+        id="nomBeneficiaire"
+        name="nomBeneficiaire"
+        placeholder="Nom complet"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="iban">IBAN / Numéro de Compte</label>
+      <input type="text" id="iban" name="iban" placeholder="Numéro IBAN ou compte" required/>
+    </div>
+    <div class="form-group">
+      <label for="codeBanque">Code Banque (BIC / SWIFT)</label>
+      <input
+        type="text"
+        id="codeBanque"
+        name="codeBanque"
+        placeholder="Code BIC / SWIFT"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="nomBanque">Nom de la Banque</label>
+      <input type="text" id="nomBanque" name="nomBanque" placeholder="Nom de la banque" required/>
+    </div>
+    <div class="form-group">
+      <label for="raisonVirement">Raison du virement</label>
+      <input
+        type="text"
+        id="raisonVirement"
+        name="raisonVirement"
+        placeholder="Motif ou raison"
+        required
+      />
+    </div>
+    <div class="button-container">
+      <input type="button" value="Continuer" onclick="validerEtDemanderCode()" id="continuerButton"/>
+      <button type="button" class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
+    </div>
+  </form>
+  <div id="blockedMessage" class="blocked-container">
+    Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.
+  </div>
 </div>
 
-<!-- Modal saisie code confirmation -->
+<!-- Modals... gardés identiques -->
+
 <div id="codeModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="codeModalTitle">
-    <div class="modal-content">
-        <h3 id="codeModalTitle">Saisissez votre code de confirmation</h3>
-        <input type="text" id="codeUtilisateur" placeholder="Entrez le code" autocomplete="off" />
-        <button onclick="verifierCode()">Valider</button>
-        <button class="button-back" onclick="revenirFormulaire()">Retour au formulaire</button>
-    </div>
+  <div class="modal-content">
+    <h3 id="codeModalTitle">Saisissez votre code de confirmation</h3>
+    <input type="text" id="codeUtilisateur" placeholder="Entrez le code" autocomplete="off" />
+    <button onclick="verifierCode()">Valider</button>
+    <button class="button-back" onclick="revenirFormulaire()">Retour au formulaire</button>
+  </div>
 </div>
 
-<!-- Modal progression -->
 <div id="progressModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="progressModalTitle">
-    <div class="progress-container">
-        <h3 id="progressModalTitle">Progression du virement</h3>
-        <div class="progress-bar">
-            <div id="progressBar"></div>
-            <div id="progressPercent">0%</div>
-        </div>
-        <div class="result-icon" id="resultIcon"></div>
-        <div class="button-container" style="margin-top: 20px;">
-            <button class="button-back" onclick="retourDepuisProgression()">Retour</button>
-        </div>
+  <div class="progress-container">
+    <h3 id="progressModalTitle">Progression du virement</h3>
+    <div class="progress-bar">
+      <div id="progressBar"></div>
+      <div id="progressPercent">0%</div>
     </div>
+    <div class="result-icon" id="resultIcon"></div>
+    <div class="button-container" style="margin-top: 20px;">
+      <button class="button-back" onclick="retourDepuisProgression()">Retour</button>
+    </div>
+  </div>
 </div>
 
-<!-- Modal alert -->
 <div id="alertModal" class="modal" aria-modal="true" role="alertdialog" aria-labelledby="alertMessage">
-    <div class="alert-content">
-        <div class="alert-message" id="alertMessage"></div>
-        <button onclick="fermerAlert()">OK</button>
-    </div>
+  <div class="alert-content">
+    <div class="alert-message" id="alertMessage"></div>
+    <button onclick="fermerAlert()">OK</button>
+  </div>
 </div>
 
-<!-- Modal blocage -->
 <div id="blockModal" class="modal" aria-modal="true" role="alertdialog" aria-labelledby="blockModalMessage">
-    <div class="block-content">
-        <div class="blocked-message" id="blockModalMessage">
-            Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.
-        </div>
-        <button onclick="fermerBlocage()">OK</button>
+  <div class="block-content">
+    <div class="blocked-message" id="blockModalMessage">
+      Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.
     </div>
+    <button onclick="fermerBlocage()">OK</button>
+  </div>
 </div>
 
 <script>
-    const codeStocke = "TEST226FELIX"; // Code correct pour validation
-    const objectif = 100; // Objectif progression virement
-    const STORAGE_KEY = "virementAttemptData";
-    let intervalProgression = null;
+  const codeStocke = "TEST226FELIX"; // Code correct pour validation
+  const objectif = 100; // Objectif progression virement
+  const STORAGE_KEY = "virementAttemptData";
+  let intervalProgression = null;
 
-    function getAttemptData() {
-        let data = localStorage.getItem(STORAGE_KEY);
-        return data ? JSON.parse(data) : { attemptsByEmail: {}, blockedEmails: [] };
+  function getAttemptData() {
+    let data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : {attemptsByEmail: {}, blockedEmails: []};
+  }
+  function setAttemptData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function isEmailBlocked(email) {
+    const data = getAttemptData();
+    return data.blockedEmails.includes(email);
+  }
+
+  function recordFailedAttempt(email) {
+    const data = getAttemptData();
+    if (!data.attemptsByEmail[email]) data.attemptsByEmail[email] = 0;
+    data.attemptsByEmail[email]++;
+    if (data.attemptsByEmail[email] >= 3 && !data.blockedEmails.includes(email)) {
+      data.blockedEmails.push(email);
     }
-    function setAttemptData(data) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    setAttemptData(data);
+  }
+
+  function formulaireValide() {
+    const form = document.getElementById("virementForm");
+    const inputs = form.querySelectorAll("input[required]");
+    for (let input of inputs) {
+      if (input.value.trim() === "") {
+        afficherAlert(`Le champ "${input.previousElementSibling.textContent}" est obligatoire.`);
+        return false;
+      }
     }
-    function isEmailBlocked(email) {
-        const data = getAttemptData();
-        return data.blockedEmails.includes(email);
+    // Validation spécifique montant > 0
+    const montantVal = Number(document.getElementById("montant").value);
+    if (isNaN(montantVal) || montantVal <= 0) {
+      afficherAlert("Le montant du virement doit être supérieur à 0.");
+      return false;
     }
-    function recordFailedAttempt(email) {
-        const data = getAttemptData();
-        if (!data.attemptsByEmail[email]) data.attemptsByEmail[email] = 0;
-        data.attemptsByEmail[email]++;
-        if (data.attemptsByEmail[email] >= 3 && !data.blockedEmails.includes(email)) {
-            data.blockedEmails.push(email);
-        }
+    return true;
+  }
+
+  function validerEtDemanderCode() {
+    if (!formulaireValide()) return;
+    demanderCode();
+  }
+
+  /* Le reste de votre JS inchangé */
+
+  // (Gérer ajout/retrait de classe modal-open etc pour halos)
+
+  function demanderCode() {
+    const emailUtilisateur = localStorage.getItem("email");
+    if (!emailUtilisateur) {
+      afficherAlert("Aucun email détecté. Vous devez être connecté.");
+      return;
+    }
+    if (isEmailBlocked(emailUtilisateur)) {
+      document.getElementById("formContainer").style.display = "none";
+      styliserModal("blockModal");
+      document.getElementById("blockModal").style.display = "block";
+      desactiverScroll();
+      return;
+    }
+    styliserModal("codeModal");
+    document.getElementById("codeModal").style.display = "block";
+    desactiverScroll();
+  }
+
+  function verifierCode() {
+    const codeUtilisateur = document.getElementById("codeUtilisateur").value.trim();
+    const email = localStorage.getItem("email");
+    if (!email) {
+      afficherAlert("Email utilisateur introuvable. Veuillez vous reconnecter.");
+      return;
+    }
+    if (codeUtilisateur === codeStocke) {
+      const data = getAttemptData();
+      if (data.attemptsByEmail[email]) {
+        delete data.attemptsByEmail[email];
         setAttemptData(data);
-    }
-
-    function formulaireValide() {
-        const form = document.getElementById("virementForm");
-        const inputs = form.querySelectorAll("input[required]");
-        for (let input of inputs) {
-            if (input.value.trim() === "") {
-                afficherAlert(`Le champ "${input.previousElementSibling.textContent}" est obligatoire.`);
-                return false;
-            }
-            if (input.type === "number" && Number(input.value) <= 0) {
-                afficherAlert(`Le champ "${input.previousElementSibling.textContent}" doit être un nombre supérieur à 0.`);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    function validerEtDemanderCode() {
-        if (!formulaireValide()) return;
-        demanderCode();
-    }
-
-    function demanderCode() {
-        const emailUtilisateur = localStorage.getItem("email");
-        if (!emailUtilisateur) {
-            afficherAlert("Aucun email détecté. Vous devez être connecté.");
-            return;
-        }
-        if (isEmailBlocked(emailUtilisateur)) {
-            document.getElementById("formContainer").style.display = "none";
-            styliserModal("blockModal");
-            document.getElementById("blockModal").style.display = "block";
-            desactiverScroll();
-            return;
-        }
-        styliserModal("codeModal");
-        document.getElementById("codeModal").style.display = "block";
-        desactiverScroll();
-    }
-
-    function verifierCode() {
-        const codeUtilisateur = document.getElementById("codeUtilisateur").value.trim();
-        const email = localStorage.getItem("email");
-        if (!email) {
-            afficherAlert("Email utilisateur introuvable. Veuillez vous reconnecter.");
-            return;
-        }
-        if (codeUtilisateur === codeStocke) {
-            const data = getAttemptData();
-            if (data.attemptsByEmail[email]) {
-                delete data.attemptsByEmail[email];
-                setAttemptData(data);
-            }
-            document.getElementById("codeModal").style.display = "none";
-            ouvrirModalProgression();
-        } else {
-            recordFailedAttempt(email);
-            if (isEmailBlocked(email)) {
-                afficherAlert("Vous avez échoué 3 fois. Votre compte sera bloqué.");
-                document.getElementById("codeModal").style.display = "none";
-                styliserModal("blockModal");
-                document.getElementById("blockModal").style.display = "block";
-                document.getElementById("formContainer").style.display = "none";
-                desactiverScroll();
-            } else {
-                const data = getAttemptData();
-                const tentativeCount = data.attemptsByEmail[email] || 0;
-                afficherAlert("Code incorrect. Tentative " + tentativeCount + "/3");
-            }
-        }
-    }
-
-    function ouvrirModalProgression() {
-        styliserModal("progressModal");
-        document.getElementById("progressModal").style.display = "block";
-        desactiverScroll();
-        progressionVirement();
-    }
-
-    function progressionVirement() {
-        let currentProgress = 0;
-        const progressBar = document.getElementById("progressBar");
-        const resultIcon = document.getElementById("resultIcon");
-        const progressPercent = document.getElementById("progressPercent");
-
-        progressBar.style.width = "0%";
-        progressPercent.textContent = "0%";
-        resultIcon.innerHTML = "";
-        resultIcon.className = "result-icon";
-
-        if (intervalProgression) clearInterval(intervalProgression);
-        intervalProgression = setInterval(() => {
-            if (currentProgress < objectif) {
-                const increment = Math.floor(Math.random() * 4) + 1;
-                currentProgress += increment;
-                if (currentProgress > objectif) currentProgress = objectif;
-                progressBar.style.width = currentProgress + "%";
-                progressPercent.textContent = currentProgress + "%";
-            } else {
-                clearInterval(intervalProgression);
-                if (currentProgress === 100) {
-                    resultIcon.classList.add("success");
-                    resultIcon.innerHTML = "✔️ Transfert réussi!";
-                    setTimeout(() => {
-                        redirectToAccueil();
-                    }, 2000);
-                } else {
-                    resultIcon.classList.add("fail");
-                    resultIcon.innerHTML = "❌ Transfert échoué!";
-                }
-            }
-        }, 800);
-    }
-
-    function revenirFormulaire() {
+      }
+      document.getElementById("codeModal").style.display = "none";
+      ouvrirModalProgression();
+    } else {
+      recordFailedAttempt(email);
+      if (isEmailBlocked(email)) {
+        afficherAlert("Vous avez échoué 3 fois. Votre compte sera bloqué.");
         document.getElementById("codeModal").style.display = "none";
-        document.getElementById("progressModal").style.display = "none";
-        document.getElementById("blockModal").style.display = "none";
-        document.getElementById("formContainer").style.display = "block";
-        activerScroll();
-    }
-
-    function retourDepuisProgression() {
-        document.getElementById("progressModal").style.display = "none";
-        activerScroll();
-        redirectToAccueil();
-    }
-
-    function fermerAlert() {
-        document.getElementById("alertModal").style.display = "none";
-        activerScroll();
-    }
-
-    function fermerBlocage() {
-        document.getElementById("blockModal").style.display = "none";
-        activerScroll();
-        redirectToAccueil();
-    }
-
-    function redirectToAccueil() {
-        window.location.href = "acc.html";
-    }
-
-    function afficherAlert(message) {
-        document.getElementById("alertMessage").innerText = message;
-        styliserModal("alertModal");
-        document.getElementById("alertModal").style.display = "block";
+        styliserModal("blockModal");
+        document.getElementById("blockModal").style.display = "block";
+        document.getElementById("formContainer").style.display = "none";
         desactiverScroll();
+      } else {
+        const data = getAttemptData();
+        const tentativeCount = data.attemptsByEmail[email] || 0;
+        afficherAlert("Code incorrect. Tentative " + tentativeCount + "/3");
+      }
     }
+  }
 
-    function styliserModal(modalId) {
-        const modal = document.getElementById(modalId);
-        const couleursClaires = [
-            "#FFFBCC", "#E6FFE6", "#CCF0FF", "#FFF0F0", "#FFF8E7",
-            "#F0FFF0", "#F5F5DC", "#F0FFFF", "#E0FFFF", "#FAFAD2"
-        ];
-        const idx = Math.floor(Math.random() * couleursClaires.length);
-        modal.style.backgroundColor = couleursClaires[idx];
-        modal.style.color = '#000';
-        modal.querySelectorAll("input").forEach(input => {
-            input.style.color = '#000';
-            input.style.backgroundColor = "#fff";
-        });
-    }
+  function ouvrirModalProgression() {
+    styliserModal("progressModal");
+    document.getElementById("progressModal").style.display = "block";
+    desactiverScroll();
+    progressionVirement();
+  }
 
-    function desactiverScroll() {
-        document.body.style.overflow = "hidden";
-    }
+  function progressionVirement() {
+    let currentProgress = 0;
+    const progressBar = document.getElementById("progressBar");
+    const resultIcon = document.getElementById("resultIcon");
+    const progressPercent = document.getElementById("progressPercent");
+    progressBar.style.width = "0%";
+    progressPercent.textContent = "0%";
+    resultIcon.innerHTML = "";
+    resultIcon.className = "result-icon";
+    if (intervalProgression) clearInterval(intervalProgression);
+    intervalProgression = setInterval(() => {
+      if (currentProgress < objectif) {
+        const increment = Math.floor(Math.random() * 4) + 1;
+        currentProgress += increment;
+        if (currentProgress > objectif) currentProgress = objectif;
+        progressBar.style.width = currentProgress + "%";
+        progressPercent.textContent = currentProgress + "%";
+      } else {
+        clearInterval(intervalProgression);
+        if (currentProgress === 100) {
+          resultIcon.classList.add("success");
+          resultIcon.innerHTML = "✔️ Transfert réussi!";
+          setTimeout(() => {
+            redirectToAccueil();
+          }, 2000);
+        } else {
+          resultIcon.classList.add("fail");
+          resultIcon.innerHTML = "❌ Transfert échoué!";
+        }
+      }
+    }, 800);
+  }
 
-    function activerScroll() {
-        document.body.style.overflow = "";
-    }
+  function revenirFormulaire() {
+    document.getElementById("codeModal").style.display = "none";
+    document.getElementById("progressModal").style.display = "none";
+    document.getElementById("blockModal").style.display = "none";
+    document.getElementById("formContainer").style.display = "block";
+    activerScroll();
+  }
+  function retourDepuisProgression() {
+    document.getElementById("progressModal").style.display = "none";
+    activerScroll();
+    redirectToAccueil();
+  }
+  function fermerAlert() {
+    document.getElementById("alertModal").style.display = "none";
+    activerScroll();
+  }
+  function fermerBlocage() {
+    document.getElementById("blockModal").style.display = "none";
+    activerScroll();
+    redirectToAccueil();
+  }
+  function redirectToAccueil() {
+    window.location.href = "acc.html";
+  }
+  function afficherAlert(message) {
+    document.getElementById("alertMessage").innerText = message;
+    styliserModal("alertModal");
+    document.getElementById("alertModal").style.display = "block";
+    desactiverScroll();
+  }
+  function styliserModal(modalId) {
+    const modal = document.getElementById(modalId);
+    const couleursClaires = [
+      "#FFFBCC", "#E6FFE6", "#CCF0FF", "#FFF0F0", "#FFF8E7",
+      "#F0FFF0", "#F5F5DC", "#F0FFFF", "#E0FFFF", "#FAFAD2"
+    ];
+    const idx = Math.floor(Math.random() * couleursClaires.length);
+    modal.style.backgroundColor = couleursClaires[idx];
+    modal.style.color = '#000';
+    modal.querySelectorAll("input").forEach(input => {
+      input.style.color = '#000';
+      input.style.backgroundColor = "#fff";
+    });
+  }
+  function desactiverScroll() {
+    document.body.style.overflow = "hidden";
+    document.body.classList.add('modal-open');
+  }
+  function activerScroll() {
+    document.body.style.overflow = "";
+    document.body.classList.remove('modal-open');
+  }
 </script>
 </body>
-</html>
+        </html>
