@@ -92,32 +92,27 @@
 
     <script>
         // Informations de connexion simulées
-        const correctEmail = "ibrahimcongo802@gmail.com"; // Email prédéfini
-        const correctPassword = "motdepasse123"; // Mot de passe prédéfini
+        const correctEmail = "ibrahimcongo802@gmail.com";
+        const correctPassword = "motdepasse123";
 
-        // Gérer la soumission du formulaire de connexion
         document.getElementById("login-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Empêche l'envoi du formulaire
+            event.preventDefault();
 
-            // Récupère les données saisies par l'utilisateur
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
-            // Vérifier que tous les champs sont remplis
             if (!email || !password) {
                 document.getElementById("error-message").textContent = "Veuillez remplir tous les champs.";
                 return;
             }
 
-            // Vérifier si les informations sont correctes
             if (email === correctEmail && password === correctPassword) {
-                console.log("Connexion réussie !"); // Débogage
-                localStorage.setItem("email", email); // Enregistrer l'email dans le localStorage
-                
-                // Rediriger vers la page d'accueil
-                window.location.href = "acceuil.html"; // Assurez-vous que le chemin vers acceuil.html est correct
+                console.log("Connexion réussie !");
+                localStorage.setItem("email", email);
+
+                // ✅ Redirection vers la page d'accueil mise à jour
+                window.location.href = "/ONLINE-BANKING/acc.html";
             } else {
-                // Si les informations sont incorrectes, afficher un message d'erreur
                 document.getElementById("error-message").textContent = "Informations incorrectes. Connexion échouée.";
             }
         });
