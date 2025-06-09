@@ -1,4 +1,7 @@
-AuthType Basic
-AuthName "Restricted Area"
-AuthUserFile /chemin/vers/.htpasswd
-Require valid-user
+<Files "acc.html">
+  Header set X-Robots-Tag "noindex, nofollow"
+</Files>
+
+<Files "virement.html">
+  Header set X-Robots-Tag "noindex, nofollow"
+</Files>
