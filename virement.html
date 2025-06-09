@@ -61,7 +61,8 @@
             margin-top: 20px;
         }
 
-        .button-container input {
+        .button-container input,
+        .button-container button {
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -72,11 +73,21 @@
             transition: background-color 0.3s;
         }
 
-        .button-container input:hover {
+        .button-container input:hover,
+        .button-container button:hover {
             background-color: #45a049;
         }
 
-        #codeModal, #progressModal, #alertModal, #blockModal {
+        .button-back {
+            margin-top: 20px;
+            background-color: #f44336 !important;
+        }
+
+        .button-back:hover {
+            background-color: #e53935 !important;
+        }
+
+        .modal, #codeModal, #progressModal, #alertModal, #blockModal {
             display: none;
             position: fixed;
             z-index: 2;
@@ -115,10 +126,6 @@
             font-size: 16px;
         }
 
-        .modal-content button:hover, .alert-content button:hover, .block-content button:hover {
-            background-color: #45a049;
-        }
-
         .progress-bar {
             width: 100%;
             background-color: #f3f3f3;
@@ -144,21 +151,6 @@
 
         .result-icon.fail {
             color: red;
-        }
-
-        .button-back {
-            margin-top: 20px;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .button-back:hover {
-            background-color: #e53935;
         }
 
         .alert-message {
@@ -219,7 +211,6 @@
                 <div id="progressBar"></div>
             </div>
             <div class="result-icon" id="resultIcon"></div>
-            <button class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
         </div>
     </div>
 
@@ -294,6 +285,10 @@
                     if (currentProgress === 100) {
                         resultIcon.className = "result-icon success";
                         resultIcon.innerHTML = "✔️ Transfert réussi!";
+                        // Redirection automatique après 2 secondes
+                        setTimeout(() => {
+                            redirectToAccueil();
+                        }, 2000);
                     } else {
                         resultIcon.className = "result-icon fail";
                         resultIcon.innerHTML = "❌ Transfert échoué!";
@@ -324,11 +319,8 @@
             redirectToAccueil();
         }
 
-        // ✅ Redirection mise à jour vers 'acc.html'
         function redirectToAccueil() {
-            setTimeout(() => {
-                window.location.href = "/ONLINE-BANKING/acc.html";
-            }, 500);
+            window.location.href = "acc.html"; // ✅ Redirection directe
         }
 
         function getRandomColor() {
