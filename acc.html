@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <title>Portefeuille - Vantex</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
 <style>
-    *, *::before, *::after {
+    _,_ ::before, *::after {
         box-sizing: border-box;
     }
-
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #f9fbfc;
@@ -23,7 +21,6 @@
         padding: 10px 10px 70px; /* moins de padding */
         color: #222;
     }
-
     .welcome-container {
         background-color: #fff;
         max-width: 400px;
@@ -47,7 +44,6 @@
         font-style: normal;
         color: #555;
     }
-
     #portefeuilleSection {
         background-color: #fff;
         max-width: 400px;
@@ -56,7 +52,6 @@
         box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
         padding: 20px 20px 20px; /* padding réduit */
     }
-
     #portefeuilleSection .solde-label {
         font-weight: 600;
         font-size: 14px; /* plus petit */
@@ -70,7 +65,6 @@
         color: #1976d2;
         font-size: 18px;
     }
-
     #portefeuilleSection .solde-montant {
         font-size: 30px; /* un peu plus petit */
         font-weight: 700;
@@ -78,7 +72,6 @@
         margin: 0 0 12px 0;
         letter-spacing: 0.04em;
     }
-
     #portefeuilleSection .description {
         font-style: normal;
         font-weight: 400;
@@ -86,7 +79,6 @@
         color: #666666;
         margin-bottom: 18px;
     }
-
     .actions {
         display: flex;
         flex-wrap: wrap;
@@ -117,7 +109,6 @@
     .actions button i {
         font-size: 16px;
     }
-
     .transaction-history > h4 {
         font-weight: 700;
         font-size: 16px;
@@ -131,7 +122,6 @@
         color: #1976d2;
         font-size: 20px;
     }
-
     .transaction {
         border-radius: 10px;
         background-color: #f9fafb;
@@ -193,7 +183,6 @@
     .transaction.received .amount {
         color: #388e3c;
     }
-
     .footer-icons {
         display: flex;
         justify-content: space-around;
@@ -239,22 +228,17 @@
 </style>
 </head>
 <body>
-
 <div class="welcome-container" role="region" aria-label="Message de bienvenue" tabindex="0">
     <h1>Bienvenue, <span id="user-name">Utilisateur</span> !</h1>
     <p>Votre inscription a été réussie. Félicitations !</p>
 </div>
-
 <div id="portefeuilleSection" aria-label="Portefeuille et historique des transactions" role="main" tabindex="0">
-
     <p class="solde-label">
         Solde disponible
         <i class="fas fa-circle-check check-icon" aria-hidden="true" title="Solde vérifié"></i>
     </p>
-
     <p class="solde-montant" aria-live="polite" aria-atomic="true">0,00 Rs</p>
     <p class="description">Compte pour tous vos besoins</p>
-
     <div class="actions" role="group" aria-label="Actions du portefeuille">
         <button id="btnVoirIban" aria-label="Voir mon IBAN">
             <i class="fas fa-file-invoice"></i> Voir mon IBAN
@@ -266,10 +250,8 @@
             <i class="fas fa-credit-card"></i> Voir ma carte virtuelle
         </button>
     </div>
-
     <div class="transaction-history" aria-live="polite" aria-label="Historique des transactions">
         <h4><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> Historique des transactions</h4>
-
         <article class="transaction sent" tabindex="0" role="group" aria-label="Virement envoyé à Gerard, montant négatif - 200 000 Rs, date 4 avril 2025 à 07:31">
             <div class="details">
                 <div class="desc"><i class="fas fa-arrow-up"></i> Virement envoyé à Gerard...</div>
@@ -277,7 +259,6 @@
             </div>
             <div class="amount">- 200 000,00 Rs</div>
         </article>
-
         <article class="transaction received" tabindex="0" role="group" aria-label="Virement reçu de Vantex, montant positif +200 000 Rs, date 16 mars 2025 à 11:08">
             <div class="details">
                 <div class="desc"><i class="fas fa-arrow-down"></i> Virement reçu de Vantex...</div>
@@ -286,9 +267,7 @@
             <div class="amount">+ 200 000,00 Rs</div>
         </article>
     </div>
-
 </div>
-
 <nav class="footer-icons" role="navigation" aria-label="Menu principal">
     <div id="portefeuilleBtn" class="active" tabindex="0" role="button" aria-pressed="true" aria-label="Portefeuille">
         <i class="fas fa-wallet" aria-hidden="true"></i>
@@ -307,9 +286,7 @@
         <span>Mon compte</span>
     </div>
 </nav>
-
 <!-- Modales -->
-
 <div id="virtualCardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="virtualCardTitle" style="display:none; justify-content:center; align-items:center; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:100;">
     <div class="modal-content" style="max-width:500px; max-height:80vh; overflow-y:auto; background:#fff; border-radius:20px; padding:20px; margin:auto; text-align:center; box-shadow:0 8px 16px rgb(0 0 0 / 0.3);">
         <h3 id="virtualCardTitle" style="color:#1976d2; margin-bottom:20px;">Carte virtuelle</h3>
@@ -318,7 +295,6 @@
         <button id="closeVirtualCardBtn" aria-label="Fermer la carte virtuelle" style="background:#d32f2f; border:none; padding:10px 25px; color:#fff; border-radius:8px; cursor:pointer; font-size:16px;">Fermer</button>
     </div>
 </div>
-
 <div id="myModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="monCompteTitle" style="display:none; justify-content:center; align-items:center; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:100;">
     <div class="modal-content" style="max-width:480px; max-height:80vh; overflow-y:auto; background:#fff; border-radius:20px; padding:20px; margin:auto; text-align:left; box-shadow:0 8px 16px rgb(0 0 0 / 0.3);">
         <h3 id="monCompteTitle" style="color:#1976d2; margin-bottom:20px; text-align:center;">Vos informations de compte :</h3>
@@ -334,32 +310,27 @@
         </div>
     </div>
 </div>
-
 <script>
     // Elements selectionnés
     const portefeuilleBtn = document.getElementById("portefeuilleBtn");
     const virementBtn = document.getElementById("virementBtn");
     const virtualCardBtn = document.getElementById("virtualCardBtn");
     const monCompteBtn = document.getElementById("monCompteBtn");
-
     const portefeuilleSection = document.getElementById("portefeuilleSection");
     const virtualCardModal = document.getElementById("virtualCardModal");
     const closeVirtualCardBtn = document.getElementById("closeVirtualCardBtn");
     const myModal = document.getElementById("myModal");
     const btnSeDeconnecter = document.getElementById("btnSeDeconnecter");
     const btnCloseMyAccount = document.getElementById("btnCloseMyAccount");
-
     const btnVoirIban = document.getElementById("btnVoirIban");
     const btnEffectuerVirement = document.getElementById("btnEffectuerVirement");
     const btnVoirCarteVirtuelle = document.getElementById("btnVoirCarteVirtuelle");
-
     function deselectAll(){
         portefeuilleBtn.classList.remove("active");
         virementBtn.classList.remove("active");
         virtualCardBtn.classList.remove("active");
         monCompteBtn.classList.remove("active");
     }
-
     // Portefeuille affiche section principale
     portefeuilleBtn.onclick = () => {
         deselectAll();
@@ -368,13 +339,10 @@
         virtualCardModal.style.display = "none";
         myModal.style.display = "none";
     };
-
-    // Virement redirection
+    // Virement redirection (alerte supprimée)
     virementBtn.onclick = () => {
-        alert("Redirection vers la page de virement.");
         window.location.href = "virement.html";
     };
-
     // Carte virtuelle montre modal
     virtualCardBtn.onclick = () => {
         deselectAll();
@@ -383,14 +351,12 @@
         portefeuilleSection.style.display = "none";
         myModal.style.display = "none";
     };
-
     closeVirtualCardBtn.onclick = () => {
         virtualCardModal.style.display = "none";
         deselectAll();
         portefeuilleBtn.classList.add("active");
         portefeuilleSection.style.display = "block";
     };
-
     // Mon compte montre modal
     monCompteBtn.onclick = () => {
         deselectAll();
@@ -399,19 +365,16 @@
         portefeuilleSection.style.display = "none";
         virtualCardModal.style.display = "none";
     };
-
     btnCloseMyAccount.onclick = () => {
         myModal.style.display = "none";
         deselectAll();
         portefeuilleBtn.classList.add("active");
         portefeuilleSection.style.display = "block";
     };
-
     btnSeDeconnecter.onclick = () => {
         alert("Vous avez été déconnecté.");
         // window.location.href = "login.html";
     };
-
     // Voir IBAN ouvre modale Mon compte au lieu d'alerte
     btnVoirIban.onclick = () => {
         deselectAll();
@@ -420,12 +383,10 @@
         portefeuilleSection.style.display = "none";
         virtualCardModal.style.display = "none";
     };
-
     // Effectuer virement continue redirection vers virement.html
     btnEffectuerVirement.onclick = () => {
         window.location.href = "virement.html";
     };
-
     // Voir carte virtuelle ouvre modal carte virtuelle
     btnVoirCarteVirtuelle.onclick = () => {
         deselectAll();
@@ -433,7 +394,6 @@
         virtualCardModal.style.display = "flex";
         portefeuilleSection.style.display = "none";
     };
-
     // Navigation clavier accessible sur footer
     [portefeuilleBtn, virementBtn, virtualCardBtn, monCompteBtn].forEach(btn => {
         btn.addEventListener("keydown", e => {
@@ -444,6 +404,5 @@
         });
     });
 </script>
-
 </body>
 </html>
