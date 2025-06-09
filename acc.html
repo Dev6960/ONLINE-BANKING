@@ -6,10 +6,12 @@
 <title>Portefeuille - Vantex</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
-    /* Empêche tout scroll sur toute la page */
+    /* PAGE SCROLLABLE */
     html, body {
-        overflow: hidden;
+        overflow-y: auto;
         height: 100%;
+        margin: 0;
+        padding: 0;
     }
     *, *::before, *::after {
         box-sizing: border-box;
@@ -26,6 +28,140 @@
         padding: 10px 10px 70px;
         color: #222;
     }
+
+    /* ========== HEADER ========== */
+    #topHeader {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 10px 5px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.07);
+      box-sizing: border-box;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .logo-container img {
+      height: 60px;  /* agrandi */
+      width: auto;
+      user-select: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #1976d2;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .user-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .user-icon:focus {
+      outline: 2px solid #0d47a1;
+      outline-offset: 2px;
+    }
+
+    /* Notification */
+    .notif-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    #notificationBtn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #1976d2;
+      font-size: 22px;
+      position: relative;
+      padding: 0;
+      user-select: none;
+    }
+
+    #notificationBtn:focus {
+      outline: 2px solid #0d47a1;
+      outline-offset: 2px;
+    }
+
+    /* Badge notification */
+    .notif-badge {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      background-color: #d32f2f;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 12px;
+      min-width: 18px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    /* Notification list */
+    .notification-list {
+      position: fixed; /* FIXÉ pour être visible sur scroll */
+      top: 70px; /* juste sous le header */
+      right: 10px;
+      background: white;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+      border-radius: 8px;
+      width: 280px;
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 10px;
+      font-size: 14px;
+      color: #222;
+      user-select: none;
+      z-index: 250;
+      display: none; /* masqué par défaut */
+    }
+
+    .notification-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .notification-list li {
+      padding: 6px 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .notification-list li:last-child {
+      border-bottom: none;
+    }
+    /* ===== FIN HEADER ===== */
+
     .welcome-container {
         background-color: #fff;
         max-width: 400px;
@@ -246,6 +382,36 @@
 </style>
 </head>
 <body>
+<!-- Champ email caché -->
+<input type="hidden" id="email" value="lpgr31@gmail.com" />
+
+<!-- HEADER avec logo + icones -->
+<header id="topHeader" role="banner" aria-label="En-tête du site">
+  <div class="logo-container">
+    <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/Design%20sans%20titre%20(2).png" alt="Logo BDE" />
+  </div>
+  <div class="header-right">
+    <div id="notification-container" class="notif-wrapper" tabindex="0" aria-label="Notifications" role="region" aria-live="polite">
+      <button id="notificationBtn" aria-haspopup="true" aria-expanded="false" aria-controls="notificationList" aria-label="Afficher les notifications">
+        <i class="fas fa-bell"></i>
+        <span id="notif-badge" class="notif-badge" aria-hidden="true" style="display:none;">0</span>
+      </button>
+      <div id="notificationList" class="notification-list" role="region" aria-label="Liste des notifications" hidden>
+        <ul id="notificationItems">
+          <li>Bienvenue sur votre tableau de bord !</li>
+          <li>Votre solde a été mis à jour.</li>
+          <li>Nouvelle offre disponible.</li>
+        </ul>
+      </div>
+    </div>
+    <div id="userIcon" class="user-icon" tabindex="0" role="button" aria-label="Profil utilisateur. Cliquez pour modifier la photo">
+      <span id="userInitials"></span>
+      <img id="userPhoto" alt="Photo de profil" style="display:none;"/>
+      <input type="file" id="photoUpload" accept="image/*" style="display:none" aria-label="Chargement d'une nouvelle photo de profil"/>
+    </div>
+  </div>
+</header>
+
 <div class="welcome-container" role="region" aria-label="Message de bienvenue" tabindex="0">
     <h1>Bienvenue, <span id="user-name">Utilisateur</span> !</h1>
     <p>Votre inscription a été réussie. Félicitations !</p>
@@ -329,7 +495,7 @@
     </div>
 </div>
 <script>
-    // Elements selectionnés
+    // Elements sélectionnés
     const portefeuilleBtn = document.getElementById("portefeuilleBtn");
     const virementBtn = document.getElementById("virementBtn");
     const virtualCardBtn = document.getElementById("virtualCardBtn");
@@ -343,6 +509,7 @@
     const btnVoirIban = document.getElementById("btnVoirIban");
     const btnEffectuerVirement = document.getElementById("btnEffectuerVirement");
     const btnVoirCarteVirtuelle = document.getElementById("btnVoirCarteVirtuelle");
+
     function deselectAll(){
         portefeuilleBtn.classList.remove("active");
         virementBtn.classList.remove("active");
@@ -405,22 +572,4 @@
     btnEffectuerVirement.onclick = () => {
         window.location.href = "virement.html";
     };
-    // Voir carte virtuelle ouvre modal carte virtuelle
-    btnVoirCarteVirtuelle.onclick = () => {
-        deselectAll();
-        virtualCardBtn.classList.add("active");
-        virtualCardModal.style.display = "flex";
-        portefeuilleSection.style.display = "none";
-    };
-    // Navigation clavier accessible sur footer
-    [portefeuilleBtn, virementBtn, virtualCardBtn, monCompteBtn].forEach(btn => {
-        btn.addEventListener("keydown", e => {
-            if(e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                btn.click();
-            }
-        });
-    });
-</script>
-</body>
-</html>
+    // Voir carte virtuelle ouvre modal c
