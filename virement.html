@@ -6,7 +6,177 @@
     <title>Virement International</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Ton style ici (comme précédemment) */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"], input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container input {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .button-container input:hover {
+            background-color: #45a049;
+        }
+
+        #codeModal, #progressModal, #alertModal, #blockModal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content, .alert-content, .progress-container, .block-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .modal-content input, .alert-content input {
+            width: 80%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .modal-content button, .alert-content button, .block-content button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-content button:hover, .alert-content button:hover, .block-content button:hover {
+            background-color: #45a049;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .progress-bar div {
+            height: 20px;
+            background-color: #4CAF50;
+            width: 0;
+            border-radius: 10px;
+        }
+
+        .result-icon {
+            margin-top: 20px;
+            font-size: 30px;
+        }
+
+        .result-icon.success {
+            color: green;
+        }
+
+        .result-icon.fail {
+            color: red;
+        }
+
+        .button-back {
+            margin-top: 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-back:hover {
+            background-color: #e53935;
+        }
+
+        .alert-message {
+            margin-bottom: 20px;
+            color: red;
+        }
+
+        .blocked-message {
+            color: red;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .blocked-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -74,11 +244,8 @@
     </div>
 
     <script>
-        // Email bloqué dans la base de données
-        const emailBloque = "user@domain.com";
-
-        // Récupération de l'email de l'utilisateur depuis localStorage
-        const emailUtilisateur = localStorage.getItem("email");
+        // Exemple d'email bloqué (à simuler avec un email récupéré dans la session)
+        let emailBloque = JSON.parse(localStorage.getItem("blockedEmails")) || [];
 
         // Tentatives de validation du code
         let tentatives = 0;
@@ -87,11 +254,15 @@
 
         // Fonction appelée lorsque l'utilisateur clique sur "Continuer"
         function demanderCode() {
-            if (emailUtilisateur === emailBloque) {
+            const emailUtilisateur = localStorage.getItem("email");
+
+            // Vérification si l'email est bloqué
+            if (emailBloque.includes(emailUtilisateur)) {
                 afficherAlert("Votre compte est bloqué. Veuillez contacter l'assistance.");
                 return;
             }
 
+            // Si le compte n'est pas bloqué, procéder à l'affichage de la modal de code
             document.getElementById("formContainer").style.display = "none";  // Masquer le formulaire
             document.getElementById("codeModal").style.display = "block";  // Afficher la modal pour saisir le code
             document.getElementById("codeModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
@@ -100,6 +271,8 @@
         // Vérification du code de confirmation
         function verifierCode() {
             const codeUtilisateur = document.getElementById("codeUtilisateur").value;
+            const emailUtilisateur = localStorage.getItem("email");
+
             if (codeUtilisateur === codeStocke) {
                 document.getElementById("codeModal").style.display = "none";
                 ouvrirModalProgression();
@@ -112,6 +285,11 @@
                     document.getElementById("codeModal").style.display = "none";
                     document.getElementById("blockModal").style.display = "block"; // Afficher le modal de blocage
                     document.getElementById("formContainer").style.display = "none"; // Masquer le formulaire
+                    // Ajouter l'email à la liste des emails bloqués
+                    if (!emailBloque.includes(emailUtilisateur)) {
+                        emailBloque.push(emailUtilisateur);
+                        localStorage.setItem("blockedEmails", JSON.stringify(emailBloque)); // Sauvegarder la liste dans le localStorage
+                    }
                 }
             }
         }
