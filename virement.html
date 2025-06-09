@@ -345,9 +345,11 @@
             redirectToAccueil();
         }
 
-        // Rediriger vers la page d'accueil
+        // Rediriger vers la page d'accueil après un petit délai
         function redirectToAccueil() {
-            window.location.href = 'accueil.html';  // Redirection vers accueil.html
+            setTimeout(() => {
+                window.location.href = 'accueil.html';  // Assurez-vous que le chemin est correct
+            }, 500); // 500ms de délai avant la redirection
         }
 
         // Générer une couleur aléatoire
