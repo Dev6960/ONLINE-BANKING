@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Virement International</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -21,7 +21,6 @@
       -moz-osx-font-smoothing: grayscale;
       transition: background-color 0.3s ease;
     }
-
     .container {
       max-width: 480px;
       width: 100%;
@@ -88,7 +87,7 @@
     .form-group {
       margin-bottom: 22px;
     }
-    /* Montant : label sur une ligne, police inchangée */
+    /* Label Montant au-dessus */
     .form-group.input-group > label[for="montant"] {
       font-size: 1em;
       font-weight: 700;
@@ -98,16 +97,17 @@
       letter-spacing: 0.05em;
       user-select: none;
     }
-    /* input montant full width */
+    /* Wrapper input montant */
     .input-group {
       position: relative;
       width: 100%;
       max-width: 100%;
     }
+    /* Large input montant avec padding suffisant */
     .input-group input#montant {
       width: 100%;
       font-size: 1.2em;
-      padding: 14px 48px 14px 18px; /* espace droit pour Rs */
+      padding: 14px 48px 14px 18px;
       font-weight: 700;
       border-radius: 12px;
       border: 1.8px solid rgba(126, 87, 194, 0.6);
@@ -129,7 +129,7 @@
       background-color: #e3f9ff;
       color: #1b2838;
     }
-    /* Suffix "Rs" à droite */
+    /* Suffixe Rs positionné à droite dans le champ */
     .input-group span {
       position: absolute;
       right: 18px;
@@ -172,8 +172,7 @@
       background-color: #e3f9ff;
       color: #1b2838;
     }
-    /* Le reste du style bouton, modal, etc inchangé (vous pouvez garder ceux précédents) */
-    /* (boutons, modals, messages, halos flous...) */
+    /* Boutons */
     .button-container {
       margin-top: 32px;
       display: flex;
@@ -224,7 +223,7 @@
       transform: translateY(-1px) !important;
       box-shadow: 0 5px 15px rgba(210, 35, 35, 0.5) !important;
     }
-    /* Modals, alerts, halos flous... */
+    /* Modal styles */
     .modal {
       display: none;
       position: fixed;
@@ -244,9 +243,137 @@
       text-align: center;
       user-select: none;
     }
-    /* ...reste modal content etc idem */
-
-    /* halos flous haut/bas quand modal actif */
+    .modal-content,
+    .alert-content,
+    .progress-container,
+    .block-content {
+      padding: 24px 16px;
+    }
+    .modal-content input,
+    .alert-content input {
+      width: 85%;
+      padding: 14px 16px;
+      margin: 25px 0;
+      border: 1.8px solid #7e57c2;
+      border-radius: 10px;
+      font-weight: 600;
+      background-color: #f0eaff;
+      color: #4a148c;
+      font-size: 1em;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: text;
+    }
+    .modal-content input:focus,
+    .alert-content input:focus {
+      outline: none;
+      border-color: #00b8d4;
+      box-shadow: 0 0 14px rgba(0, 184, 212, 0.8);
+      background-color: #d6f4ff;
+      color: #313131;
+    }
+    .modal-content button,
+    .alert-content button,
+    .block-content button {
+      background: linear-gradient(45deg, #7e57c2, #6a1b9a);
+      color: white;
+      border: none;
+      padding: 14px 26px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.1em;
+      margin: 8px 10px;
+      font-weight: 700;
+      box-shadow: 0 5px 18px rgba(126, 87, 194, 0.7);
+      transition: all 0.3s ease;
+      user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .modal-content button:hover,
+    .alert-content button:hover,
+    .block-content button:hover {
+      background: linear-gradient(45deg, #00b8d4, #008ba3);
+      box-shadow: 0 8px 25px rgba(0, 184, 212, 0.85);
+      transform: translateY(-2px);
+    }
+    /* Barre de progression + pourcentage côte à côte */
+    .progress-container > div:first-child {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .progress-bar {
+      width: 70%;
+      background-color: #ddd6f5;
+      border-radius: 14px;
+      height: 24px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 6px rgba(74, 20, 140, 0.15);
+    }
+    .progress-bar div {
+      height: 100%;
+      background: linear-gradient(90deg, #00b8d4, #7e57c2);
+      width: 0;
+      border-radius: 14px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px rgba(126, 87, 194, 0.7);
+    }
+    #progressPercent {
+      font-weight: 900;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 1.1em;
+      color: #4a148c;
+      min-width: 40px;
+      user-select: none;
+    }
+    /* Résultat */
+    .result-icon {
+      margin-top: 20px;
+      font-size: 32px;
+      font-weight: 700;
+      user-select: none;
+    }
+    .result-icon.success {
+      color: #66bb6a;
+      text-shadow: 0 0 10px #66bb6aaa;
+    }
+    .result-icon.fail {
+      color: #e57373;
+      text-shadow: 0 0 10px #e5737388;
+    }
+    .alert-message {
+      margin-bottom: 26px;
+      font-weight: 700;
+      font-size: 1.15em;
+      color: #d32f2f;
+      user-select: text;
+    }
+    .blocked-message {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: #d32f2f;
+    }
+    .blocked-container {
+      display: none;
+      text-align: center;
+      margin-top: 28px;
+      color: #d32f2f;
+      font-weight: 900;
+      font-size: 1.1em;
+      user-select: none;
+      padding: 14px 10px;
+      border: 2px solid #d32f2fbb;
+      border-radius: 12px;
+      background-color: rgba(211, 47, 47, 0.1);
+      box-shadow: 0 0 10px rgba(211, 47, 47, 0.15);
+      transition: all 0.3s ease;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* Halos flous en haut et bas */
     body.modal-open::before,
     body.modal-open::after {
       content: "";
@@ -271,312 +398,285 @@
   </style>
 </head>
 <body>
-<div class="container" id="formContainer">
-  <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/Design%20sans%20titre%20(2).png" alt="Logo"/>
-  <h2>Effectuer un virement</h2>
-  <div class="solde">Solde disponible : <strong>0,00 Rs</strong></div>
-  <div class="description">Envoyer un virement international</div>
-  <form id="virementForm" onsubmit="return false;">
-    <div class="form-group input-group">
-      <label for="montant">Montant du virement</label>
-      <input
-        type="number"
-        id="montant"
-        name="montant"
-        placeholder="0.00"
-        min="0.01"
-        required
-        step="0.01"
-      />
-      <span>Rs</span>
-    </div>
-    <div class="form-group">
-      <label for="nomBeneficiaire">Nom du bénéficiaire</label>
-      <input
-        type="text"
-        id="nomBeneficiaire"
-        name="nomBeneficiaire"
-        placeholder="Nom complet"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="iban">IBAN / Numéro de Compte</label>
-      <input type="text" id="iban" name="iban" placeholder="Numéro IBAN ou compte" required/>
-    </div>
-    <div class="form-group">
-      <label for="codeBanque">Code Banque (BIC / SWIFT)</label>
-      <input
-        type="text"
-        id="codeBanque"
-        name="codeBanque"
-        placeholder="Code BIC / SWIFT"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="nomBanque">Nom de la Banque</label>
-      <input type="text" id="nomBanque" name="nomBanque" placeholder="Nom de la banque" required/>
-    </div>
-    <div class="form-group">
-      <label for="raisonVirement">Raison du virement</label>
-      <input
-        type="text"
-        id="raisonVirement"
-        name="raisonVirement"
-        placeholder="Motif ou raison"
-        required
-      />
-    </div>
-    <div class="button-container">
-      <input type="button" value="Continuer" onclick="validerEtDemanderCode()" id="continuerButton"/>
-      <button type="button" class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
-    </div>
-  </form>
-  <div id="blockedMessage" class="blocked-container">
-    Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.
-  </div>
-</div>
 
-<!-- Modals... gardés identiques -->
-
-<div id="codeModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="codeModalTitle">
-  <div class="modal-content">
-    <h3 id="codeModalTitle">Saisissez votre code de confirmation</h3>
-    <input type="text" id="codeUtilisateur" placeholder="Entrez le code" autocomplete="off" />
-    <button onclick="verifierCode()">Valider</button>
-    <button class="button-back" onclick="revenirFormulaire()">Retour au formulaire</button>
-  </div>
-</div>
-
-<div id="progressModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="progressModalTitle">
-  <div class="progress-container">
-    <h3 id="progressModalTitle">Progression du virement</h3>
-    <div class="progress-bar">
-      <div id="progressBar"></div>
-      <div id="progressPercent">0%</div>
-    </div>
-    <div class="result-icon" id="resultIcon"></div>
-    <div class="button-container" style="margin-top: 20px;">
-      <button class="button-back" onclick="retourDepuisProgression()">Retour</button>
-    </div>
-  </div>
-</div>
-
-<div id="alertModal" class="modal" aria-modal="true" role="alertdialog" aria-labelledby="alertMessage">
-  <div class="alert-content">
-    <div class="alert-message" id="alertMessage"></div>
-    <button onclick="fermerAlert()">OK</button>
-  </div>
-</div>
-
-<div id="blockModal" class="modal" aria-modal="true" role="alertdialog" aria-labelledby="blockModalMessage">
-  <div class="block-content">
-    <div class="blocked-message" id="blockModalMessage">
+  <div class="container" id="formContainer">
+    <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/Design%20sans%20titre%20(2).png" alt="Logo" />
+    <h2>Effectuer un virement</h2>
+    <div class="solde">Solde disponible : <strong>0,00 Rs</strong></div>
+    <div class="description">Envoyer un virement international</div>
+    <form id="virementForm" onsubmit="return false;">
+      <div class="form-group input-group">
+        <label for="montant">Montant du virement</label>
+        <input type="number" id="montant" name="montant" placeholder="0.00" min="0.01" required step="0.01" />
+        <span>Rs</span>
+      </div>
+      <div class="form-group">
+        <label for="nomBeneficiaire">Nom du bénéficiaire</label>
+        <input type="text" id="nomBeneficiaire" name="nomBeneficiaire" placeholder="Nom complet" required />
+      </div>
+      <div class="form-group">
+        <label for="iban">IBAN / Numéro de Compte</label>
+        <input type="text" id="iban" name="iban" placeholder="Numéro IBAN ou compte" required />
+      </div>
+      <div class="form-group">
+        <label for="codeBanque">Code Banque (BIC / SWIFT)</label>
+        <input type="text" id="codeBanque" name="codeBanque" placeholder="Code BIC / SWIFT" required />
+      </div>
+      <div class="form-group">
+        <label for="nomBanque">Nom de la Banque</label>
+        <input type="text" id="nomBanque" name="nomBanque" placeholder="Nom de la banque" required />
+      </div>
+      <div class="form-group">
+        <label for="raisonVirement">Raison du virement</label>
+        <input type="text" id="raisonVirement" name="raisonVirement" placeholder="Motif ou raison" required />
+      </div>
+      <div class="button-container">
+        <input type="button" value="Continuer" onclick="validerEtDemanderCode()" id="continuerButton" />
+        <button type="button" class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
+      </div>
+    </form>
+    <div id="blockedMessage" class="blocked-container">
       Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.
     </div>
-    <button onclick="fermerBlocage()">OK</button>
   </div>
-</div>
 
-<script>
-  const codeStocke = "TEST226FELIX"; // Code correct pour validation
-  const objectif = 100; // Objectif progression virement
-  const STORAGE_KEY = "virementAttemptData";
-  let intervalProgression = null;
+  <div id="codeModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="codeModalTitle">
+    <div class="modal-content">
+      <h3 id="codeModalTitle">Saisissez votre code de confirmation</h3>
+      <input type="text" id="codeUtilisateur" placeholder="Entrez le code" autocomplete="off" />
+      <button onclick="verifierCode()">Valider</button>
+      <button class="button-back" onclick="revenirFormulaire()">Retour au formulaire</button>
+    </div>
+  </div>
 
-  function getAttemptData() {
-    let data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : {attemptsByEmail: {}, blockedEmails: []};
-  }
-  function setAttemptData(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }
+  <div id="progressModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="progressModalTitle">
+    <div class="progress-container">
+      <h3 id="progressModalTitle">Progression du virement</h3>
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="progress-bar"><div id="progressBar"></div></div>
+        <div id="progressPercent">0%</div>
+      </div>
+      <div class="result-icon" id="resultIcon"></div>
+      <div class="button-container" style="margin-top: 20px;">
+        <button class="button-back" onclick="retourDepuisProgression()">Retour</button>
+      </div>
+    </div>
+  </div>
 
-  function isEmailBlocked(email) {
-    const data = getAttemptData();
-    return data.blockedEmails.includes(email);
-  }
+  <div id="alertModal" class="modal" aria-modal="true" role="alertdialog" aria-labelledby="alertMessage">
+    <div class="alert-content">
+      <div class="alert-message" id="alertMessage"></div>
+      <button onclick="fermerAlert()">OK</button>
+    </div>
+  </div>
 
-  function recordFailedAttempt(email) {
-    const data = getAttemptData();
-    if (!data.attemptsByEmail[email]) data.attemptsByEmail[email] = 0;
-    data.attemptsByEmail[email]++;
-    if (data.attemptsByEmail[email] >= 3 && !data.blockedEmails.includes(email)) {
-      data.blockedEmails.push(email);
+  <div id="blockModal" class="modal" aria-modal="true" role="alertdialog" aria-labelledby="blockModalMessage">
+    <div class="block-content">
+      <div class="blocked-message" id="blockModalMessage">
+        Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.
+      </div>
+      <button onclick="fermerBlocage()">OK</button>
+    </div>
+  </div>
+
+  <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/684583d5dc679b190e4c631f/1it7olvg3';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+  <!--End of Tawk.to Script-->
+
+  <script>
+    const codeStocke = "TEST226FELIX";
+    const objectif = 100;
+    const STORAGE_KEY = "virementAttemptData";
+    let intervalProgression = null;
+
+    function getAttemptData() {
+      let data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : { attemptsByEmail: {}, blockedEmails: [] };
     }
-    setAttemptData(data);
-  }
-
-  function formulaireValide() {
-    const form = document.getElementById("virementForm");
-    const inputs = form.querySelectorAll("input[required]");
-    for (let input of inputs) {
-      if (input.value.trim() === "") {
-        afficherAlert(`Le champ "${input.previousElementSibling.textContent}" est obligatoire.`);
-        return false;
-      }
+    function setAttemptData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
-    // Validation spécifique montant > 0
-    const montantVal = Number(document.getElementById("montant").value);
-    if (isNaN(montantVal) || montantVal <= 0) {
-      afficherAlert("Le montant du virement doit être supérieur à 0.");
-      return false;
-    }
-    return true;
-  }
-
-  function validerEtDemanderCode() {
-    if (!formulaireValide()) return;
-    demanderCode();
-  }
-
-  /* Le reste de votre JS inchangé */
-
-  // (Gérer ajout/retrait de classe modal-open etc pour halos)
-
-  function demanderCode() {
-    const emailUtilisateur = localStorage.getItem("email");
-    if (!emailUtilisateur) {
-      afficherAlert("Aucun email détecté. Vous devez être connecté.");
-      return;
-    }
-    if (isEmailBlocked(emailUtilisateur)) {
-      document.getElementById("formContainer").style.display = "none";
-      styliserModal("blockModal");
-      document.getElementById("blockModal").style.display = "block";
-      desactiverScroll();
-      return;
-    }
-    styliserModal("codeModal");
-    document.getElementById("codeModal").style.display = "block";
-    desactiverScroll();
-  }
-
-  function verifierCode() {
-    const codeUtilisateur = document.getElementById("codeUtilisateur").value.trim();
-    const email = localStorage.getItem("email");
-    if (!email) {
-      afficherAlert("Email utilisateur introuvable. Veuillez vous reconnecter.");
-      return;
-    }
-    if (codeUtilisateur === codeStocke) {
+    function isEmailBlocked(email) {
       const data = getAttemptData();
-      if (data.attemptsByEmail[email]) {
-        delete data.attemptsByEmail[email];
-        setAttemptData(data);
-      }
-      document.getElementById("codeModal").style.display = "none";
-      ouvrirModalProgression();
-    } else {
-      recordFailedAttempt(email);
-      if (isEmailBlocked(email)) {
-        afficherAlert("Vous avez échoué 3 fois. Votre compte sera bloqué.");
-        document.getElementById("codeModal").style.display = "none";
-        styliserModal("blockModal");
-        document.getElementById("blockModal").style.display = "block";
-        document.getElementById("formContainer").style.display = "none";
-        desactiverScroll();
-      } else {
-        const data = getAttemptData();
-        const tentativeCount = data.attemptsByEmail[email] || 0;
-        afficherAlert("Code incorrect. Tentative " + tentativeCount + "/3");
-      }
+      return data.blockedEmails.includes(email);
     }
-  }
-
-  function ouvrirModalProgression() {
-    styliserModal("progressModal");
-    document.getElementById("progressModal").style.display = "block";
-    desactiverScroll();
-    progressionVirement();
-  }
-
-  function progressionVirement() {
-    let currentProgress = 0;
-    const progressBar = document.getElementById("progressBar");
-    const resultIcon = document.getElementById("resultIcon");
-    const progressPercent = document.getElementById("progressPercent");
-    progressBar.style.width = "0%";
-    progressPercent.textContent = "0%";
-    resultIcon.innerHTML = "";
-    resultIcon.className = "result-icon";
-    if (intervalProgression) clearInterval(intervalProgression);
-    intervalProgression = setInterval(() => {
-      if (currentProgress < objectif) {
-        const increment = Math.floor(Math.random() * 4) + 1;
-        currentProgress += increment;
-        if (currentProgress > objectif) currentProgress = objectif;
-        progressBar.style.width = currentProgress + "%";
-        progressPercent.textContent = currentProgress + "%";
-      } else {
-        clearInterval(intervalProgression);
-        if (currentProgress === 100) {
-          resultIcon.classList.add("success");
-          resultIcon.innerHTML = "✔️ Transfert réussi!";
-          setTimeout(() => {
-            redirectToAccueil();
-          }, 2000);
-        } else {
-          resultIcon.classList.add("fail");
-          resultIcon.innerHTML = "❌ Transfert échoué!";
+    function recordFailedAttempt(email) {
+      const data = getAttemptData();
+      if (!data.attemptsByEmail[email]) data.attemptsByEmail[email] = 0;
+      data.attemptsByEmail[email]++;
+      if (data.attemptsByEmail[email] >= 3 && !data.blockedEmails.includes(email)) {
+        data.blockedEmails.push(email);
+      }
+      setAttemptData(data);
+    }
+    function formulaireValide() {
+      const form = document.getElementById("virementForm");
+      const inputs = form.querySelectorAll("input[required]");
+      for (let input of inputs) {
+        if (input.value.trim() === "") {
+          afficherAlert(`Le champ "${input.previousElementSibling.textContent}" est obligatoire.`);
+          return false;
         }
       }
-    }, 800);
-  }
-
-  function revenirFormulaire() {
-    document.getElementById("codeModal").style.display = "none";
-    document.getElementById("progressModal").style.display = "none";
-    document.getElementById("blockModal").style.display = "none";
-    document.getElementById("formContainer").style.display = "block";
-    activerScroll();
-  }
-  function retourDepuisProgression() {
-    document.getElementById("progressModal").style.display = "none";
-    activerScroll();
-    redirectToAccueil();
-  }
-  function fermerAlert() {
-    document.getElementById("alertModal").style.display = "none";
-    activerScroll();
-  }
-  function fermerBlocage() {
-    document.getElementById("blockModal").style.display = "none";
-    activerScroll();
-    redirectToAccueil();
-  }
-  function redirectToAccueil() {
-    window.location.href = "acc.html";
-  }
-  function afficherAlert(message) {
-    document.getElementById("alertMessage").innerText = message;
-    styliserModal("alertModal");
-    document.getElementById("alertModal").style.display = "block";
-    desactiverScroll();
-  }
-  function styliserModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const couleursClaires = [
-      "#FFFBCC", "#E6FFE6", "#CCF0FF", "#FFF0F0", "#FFF8E7",
-      "#F0FFF0", "#F5F5DC", "#F0FFFF", "#E0FFFF", "#FAFAD2"
-    ];
-    const idx = Math.floor(Math.random() * couleursClaires.length);
-    modal.style.backgroundColor = couleursClaires[idx];
-    modal.style.color = '#000';
-    modal.querySelectorAll("input").forEach(input => {
-      input.style.color = '#000';
-      input.style.backgroundColor = "#fff";
-    });
-  }
-  function desactiverScroll() {
-    document.body.style.overflow = "hidden";
-    document.body.classList.add('modal-open');
-  }
-  function activerScroll() {
-    document.body.style.overflow = "";
-    document.body.classList.remove('modal-open');
-  }
-</script>
+      const montantVal = Number(document.getElementById("montant").value);
+      if (isNaN(montantVal) || montantVal <= 0) {
+        afficherAlert("Le montant du virement doit être supérieur à 0.");
+        return false;
+      }
+      return true;
+    }
+    function validerEtDemanderCode() {
+      if (!formulaireValide()) return;
+      demanderCode();
+    }
+    function demanderCode() {
+      const emailUtilisateur = localStorage.getItem("email");
+      if (!emailUtilisateur) {
+        afficherAlert("Aucun email détecté. Vous devez être connecté.");
+        return;
+      }
+      if (isEmailBlocked(emailUtilisateur)) {
+        document.getElementById("formContainer").style.display = "none";
+        styliserModal("blockModal");
+        document.getElementById("blockModal").style.display = "block";
+        desactiverScroll();
+        return;
+      }
+      styliserModal("codeModal");
+      document.getElementById("codeModal").style.display = "block";
+      desactiverScroll();
+    }
+    function verifierCode() {
+      const codeUtilisateur = document.getElementById("codeUtilisateur").value.trim();
+      const email = localStorage.getItem("email");
+      if (!email) {
+        afficherAlert("Email utilisateur introuvable. Veuillez vous reconnecter.");
+        return;
+      }
+      if (codeUtilisateur === codeStocke) {
+        const data = getAttemptData();
+        if (data.attemptsByEmail[email]) {
+          delete data.attemptsByEmail[email];
+          setAttemptData(data);
+        }
+        document.getElementById("codeModal").style.display = "none";
+        ouvrirModalProgression();
+      } else {
+        recordFailedAttempt(email);
+        if (isEmailBlocked(email)) {
+          afficherAlert("Vous avez échoué 3 fois. Votre compte sera bloqué.");
+          document.getElementById("codeModal").style.display = "none";
+          styliserModal("blockModal");
+          document.getElementById("blockModal").style.display = "block";
+          document.getElementById("formContainer").style.display = "none";
+          desactiverScroll();
+        } else {
+          const data = getAttemptData();
+          const tentativeCount = data.attemptsByEmail[email] || 0;
+          afficherAlert("Code incorrect. Tentative " + tentativeCount + "/3");
+        }
+      }
+    }
+    function ouvrirModalProgression() {
+      styliserModal("progressModal");
+      document.getElementById("progressModal").style.display = "block";
+      desactiverScroll();
+      progressionVirement();
+    }
+    function progressionVirement() {
+      let currentProgress = 0;
+      const progressBar = document.getElementById("progressBar");
+      const resultIcon = document.getElementById("resultIcon");
+      const progressPercent = document.getElementById("progressPercent");
+      progressBar.style.width = "0%";
+      progressPercent.textContent = "0%";
+      resultIcon.innerHTML = "";
+      resultIcon.className = "result-icon";
+      if (intervalProgression) clearInterval(intervalProgression);
+      intervalProgression = setInterval(() => {
+        if (currentProgress < objectif) {
+          const increment = Math.floor(Math.random() * 4) + 1;
+          currentProgress += increment;
+          if (currentProgress > objectif) currentProgress = objectif;
+          progressBar.style.width = currentProgress + "%";
+          progressPercent.textContent = currentProgress + "%";
+        } else {
+          clearInterval(intervalProgression);
+          if (currentProgress === 100) {
+            resultIcon.classList.add("success");
+            resultIcon.innerHTML = "✔️ Transfert réussi!";
+            setTimeout(() => {
+              redirectToAccueil();
+            }, 2000);
+          } else {
+            resultIcon.classList.add("fail");
+            resultIcon.innerHTML = "❌ Transfert échoué!";
+          }
+        }
+      }, 800);
+    }
+    function revenirFormulaire() {
+      document.getElementById("codeModal").style.display = "none";
+      document.getElementById("progressModal").style.display = "none";
+      document.getElementById("blockModal").style.display = "none";
+      document.getElementById("formContainer").style.display = "block";
+      activerScroll();
+    }
+    function retourDepuisProgression() {
+      document.getElementById("progressModal").style.display = "none";
+      activerScroll();
+      redirectToAccueil();
+    }
+    function fermerAlert() {
+      document.getElementById("alertModal").style.display = "none";
+      activerScroll();
+    }
+    function fermerBlocage() {
+      document.getElementById("blockModal").style.display = "none";
+      activerScroll();
+      redirectToAccueil();
+    }
+    function redirectToAccueil() {
+      window.location.href = "acc.html";
+    }
+    function afficherAlert(message) {
+      document.getElementById("alertMessage").innerText = message;
+      styliserModal("alertModal");
+      document.getElementById("alertModal").style.display = "block";
+      desactiverScroll();
+    }
+    function styliserModal(modalId) {
+      const modal = document.getElementById(modalId);
+      const couleursClaires = [
+        "#FFFBCC", "#E6FFE6", "#CCF0FF", "#FFF0F0", "#FFF8E7",
+        "#F0FFF0", "#F5F5DC", "#F0FFFF", "#E0FFFF", "#FAFAD2"
+      ];
+      const idx = Math.floor(Math.random() * couleursClaires.length);
+      modal.style.backgroundColor = couleursClaires[idx];
+      modal.style.color = '#000';
+      modal.querySelectorAll("input").forEach(input => {
+        input.style.color = '#000';
+        input.style.backgroundColor = "#fff";
+      });
+    }
+    function desactiverScroll() {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add('modal-open');
+    }
+    function activerScroll() {
+      document.body.style.overflow = "";
+      document.body.classList.remove('modal-open');
+    }
+  </script>
 </body>
-        </html>
+</html>
