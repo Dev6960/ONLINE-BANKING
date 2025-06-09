@@ -2,125 +2,364 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Virement International</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f4f7;
+            background-color: #f4f6f9;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            overflow-y: auto;
         }
 
         .container {
+            width: 100%;
+            max-width: 500px;
             background-color: #ffffff;
+            padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
 
         h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
         }
 
         label {
-            display: block;
             font-weight: bold;
-            margin-bottom: 8px;
-            color: #555;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        input {
+        input[type="text"], input[type="number"], input[type="submit"] {
             width: 100%;
             padding: 12px;
-            margin-bottom: 15px;
+            margin: 5px 0;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-            color: #333;
+            border-radius: 6px;
+            box-sizing: border-box;
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container input {
             background-color: #4CAF50;
-            border: none;
             color: white;
-            font-size: 16px;
-            border-radius: 4px;
+            border: none;
+            padding: 12px 20px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-size: 16px;
+            border-radius: 30px;
+            transition: background-color 0.3s;
         }
 
-        button:hover {
+        .button-container input:hover {
             background-color: #45a049;
         }
 
-        .error-message {
-            color: red;
-            font-size: 14px;
+        #codeModal, #progressModal, #alertModal, #blockModal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content, .alert-content, .progress-container, .block-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
         }
+
+        .modal-content input, .alert-content input {
+            width: 80%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .modal-content button, .alert-content button, .block-content button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-content button:hover, .alert-content button:hover, .block-content button:hover {
+            background-color: #45a049;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .progress-bar div {
+            height: 20px;
+            background-color: #4CAF50;
+            width: 0;
+            border-radius: 10px;
+        }
+
+        .result-icon {
+            margin-top: 20px;
+            font-size: 30px;
+        }
+
+        .result-icon.success {
+            color: green;
+        }
+
+        .result-icon.fail {
+            color: red;
+        }
+
+        .button-back {
+            margin-top: 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-back:hover {
+            background-color: #e53935;
+        }
+
+        .alert-message {
+            margin-bottom: 20px;
+            color: red;
+        }
+
+        .blocked-message {
+            color: red;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .blocked-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Se connecter</h2>
-        <form id="login-form">
-            <label for="email">Adresse e-mail:</label>
-            <input type="email" id="email" name="email" required>
 
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
+    <div class="container" id="formContainer">
+        <h2>Effectuer un Virement</h2>
 
-            <button type="submit">Se connecter</button>
+        <form id="virementForm">
+            <div class="form-group">
+                <label for="montant">Montant du virement</label>
+                <input type="number" id="montant" name="montant" placeholder="0.00 Rs" required>
+            </div>
+            <div class="button-container">
+                <input type="button" value="Continuer" onclick="demanderCode()" id="continuerButton">
+            </div>
         </form>
-        <div id="error-message" class="error-message"></div>
+
+        <!-- Message de blocage du compte après plusieurs tentatives -->
+        <div id="blockedMessage" class="blocked-container">
+            <div class="blocked-message">Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.</div>
+        </div>
+
+        <!-- Bouton retour vers la page d'accueil -->
+        <div class="button-container">
+            <button class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
+        </div>
+    </div>
+
+    <!-- Modal pour saisir le code -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <h3>Saisissez votre code de confirmation</h3>
+            <input type="text" id="codeUtilisateur" placeholder="Entrez le code">
+            <button onclick="verifierCode()">Valider</button>
+            <button class="button-back" onclick="revenirFormulaire()">Retour au formulaire</button>
+        </div>
+    </div>
+
+    <!-- Modal pour la progression du virement -->
+    <div id="progressModal" class="modal">
+        <div class="progress-container">
+            <h3>Progression du virement</h3>
+            <div class="progress-bar">
+                <div id="progressBar"></div>
+            </div>
+            <div class="result-icon" id="resultIcon"></div>
+            <button class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
+        </div>
+    </div>
+
+    <!-- Modal d'alerte -->
+    <div id="alertModal" class="modal">
+        <div class="alert-content">
+            <div class="alert-message" id="alertMessage"></div>
+            <button onclick="fermerAlert()">OK</button>
+        </div>
+    </div>
+
+    <!-- Modal de blocage du compte -->
+    <div id="blockModal" class="modal">
+        <div class="block-content">
+            <div class="blocked-message">Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.</div>
+            <button onclick="fermerBlocage()">OK</button>
+        </div>
     </div>
 
     <script>
-        // Informations de connexion simulées
-        const correctEmail = "ibrahimcongo802@gmail.com"; // Email prédéfini
-        const correctPassword = "motdepasse123"; // Mot de passe prédéfini
+        // Exemple d'email bloqué (à simuler avec un email récupéré dans la session)
+        const emailBloque = ["user@domain.com", "blocked@domain.com"]; // Liste des emails bloqués
 
-        // Gérer la soumission du formulaire de connexion
-        document.getElementById("login-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Empêche l'envoi du formulaire
+        // Tentatives de validation du code
+        let tentatives = 0;
+        const codeStocke = "TEST226FELIX"; // Code valide
+        let objectif = 100; // Objectif de progression (modifiable)
 
-            // Récupère les données saisies par l'utilisateur
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+        // Fonction appelée lorsque l'utilisateur clique sur "Continuer"
+        function demanderCode() {
+            const emailUtilisateur = localStorage.getItem("email");
 
-            // Vérifier que tous les champs sont remplis
-            if (!email || !password) {
-                document.getElementById("error-message").textContent = "Veuillez remplir tous les champs.";
+            // Vérification si l'email est bloqué
+            if (emailBloque.includes(emailUtilisateur)) {
+                afficherAlert("Votre compte est bloqué. Veuillez contacter l'assistance.");
                 return;
             }
 
-            // Vérifier si les informations sont correctes
-            if (email === correctEmail && password === correctPassword) {
-                console.log("Connexion réussie !"); // Débogage
-                localStorage.setItem("email", email); // Enregistrer l'email dans le localStorage
-                
-                // Rediriger vers la page d'accueil
-                window.location.href = "acceuil.html"; // Assurez-vous que le chemin vers acceuil.html est correct
+            // Si le compte n'est pas bloqué, procéder à l'affichage de la modal de code
+            document.getElementById("formContainer").style.display = "none";  // Masquer le formulaire
+            document.getElementById("codeModal").style.display = "block";  // Afficher la modal pour saisir le code
+            document.getElementById("codeModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+        }
+
+        // Vérification du code de confirmation
+        function verifierCode() {
+            const codeUtilisateur = document.getElementById("codeUtilisateur").value;
+            if (codeUtilisateur === codeStocke) {
+                document.getElementById("codeModal").style.display = "none";
+                ouvrirModalProgression();
             } else {
-                // Si les informations sont incorrectes, afficher un message d'erreur
-                document.getElementById("error-message").textContent = "Informations incorrectes. Connexion échouée.";
+                tentatives++;
+                if (tentatives < 3) {
+                    afficherAlert("Code incorrect. Tentative " + tentatives + "/3");
+                } else {
+                    afficherAlert("Vous avez échoué 3 fois. Votre compte sera bloqué.");
+                    document.getElementById("codeModal").style.display = "none";
+                    document.getElementById("blockModal").style.display = "block"; // Afficher le modal de blocage
+                    document.getElementById("formContainer").style.display = "none"; // Masquer le formulaire
+                }
             }
-        });
+        }
+
+        // Ouvrir la modal de progression du virement
+        function ouvrirModalProgression() {
+            document.getElementById("progressModal").style.display = "block";
+            document.getElementById("progressModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+            progressionVirement();
+        }
+
+        // Gestion de la progression du virement
+        function progressionVirement() {
+            let currentProgress = 0;
+            const progressBar = document.getElementById("progressBar");
+            const resultIcon = document.getElementById("resultIcon");
+
+            const interval = setInterval(() => {
+                if (currentProgress < objectif) {
+                    const increment = Math.floor(Math.random() * 4) + 1;  // Valeur aléatoire entre 1 et 4
+                    currentProgress += increment;
+                    if (currentProgress > objectif) currentProgress = objectif;
+                    progressBar.style.width = currentProgress + "%";
+                } else {
+                    clearInterval(interval);
+                    if (currentProgress === 100) {
+                        resultIcon.className = "result-icon success";
+                        resultIcon.innerHTML = "✔️ Transfert réussi!";
+                    } else {
+                        resultIcon.className = "result-icon fail";
+                        resultIcon.innerHTML = "❌ Transfert échoué!";
+                    }
+                }
+            }, 1000);  // Met à jour la barre toutes les secondes
+        }
+
+        // Revenir au formulaire
+        function revenirFormulaire() {
+            document.getElementById("formContainer").style.display = "block";  // Afficher le formulaire
+            document.getElementById("codeModal").style.display = "none";  // Masquer la modal de code
+            document.getElementById("progressModal").style.display = "none";  // Masquer la modal de progression
+            document.getElementById("blockedMessage").style.display = "none"; // Masquer le message de blocage
+        }
+
+        // Afficher un message d'alerte dans un modal
+        function afficherAlert(message) {
+            document.getElementById("alertMessage").innerText = message;
+            document.getElementById("alertModal").style.display = "block";
+            document.getElementById("alertModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+        }
+
+        // Fermer le modal d'alerte
+        function fermerAlert() {
+            document.getElementById("alertModal").style.display = "none";
+        }
+
+        // Fermer le modal de blocage et rediriger vers l'accueil
+        function fermerBlocage() {
+            document.getElementById("blockModal").style.display = "none";
+            redirectToAccueil();
+        }
+
+        // Rediriger vers la page d'accueil
+        function redirectToAccueil() {
+            window.location.href = 'accueil.html';  // Redirection vers accueil.html
+        }
+
+        // Générer une couleur aléatoire
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
     </script>
+
 </body>
 </html>
