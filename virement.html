@@ -245,7 +245,7 @@
 
     <script>
         // Exemple d'email bloqué (à simuler avec un email récupéré dans la session)
-        let emailBloque = JSON.parse(localStorage.getItem("blockedEmails")) || [];
+        const emailBloque = ["user@domain.com", "blocked@domain.com"]; // Liste des emails bloqués
 
         // Tentatives de validation du code
         let tentatives = 0;
@@ -271,8 +271,6 @@
         // Vérification du code de confirmation
         function verifierCode() {
             const codeUtilisateur = document.getElementById("codeUtilisateur").value;
-            const emailUtilisateur = localStorage.getItem("email");
-
             if (codeUtilisateur === codeStocke) {
                 document.getElementById("codeModal").style.display = "none";
                 ouvrirModalProgression();
@@ -285,11 +283,6 @@
                     document.getElementById("codeModal").style.display = "none";
                     document.getElementById("blockModal").style.display = "block"; // Afficher le modal de blocage
                     document.getElementById("formContainer").style.display = "none"; // Masquer le formulaire
-                    // Ajouter l'email à la liste des emails bloqués
-                    if (!emailBloque.includes(emailUtilisateur)) {
-                        emailBloque.push(emailUtilisateur);
-                        localStorage.setItem("blockedEmails", JSON.stringify(emailBloque)); // Sauvegarder la liste dans le localStorage
-                    }
                 }
             }
         }
