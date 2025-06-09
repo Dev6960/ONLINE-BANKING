@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /ONLINE-BANKING/acc.html
+Disallow: /ONLINE-BANKING/virement.html
