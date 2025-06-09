@@ -572,4 +572,139 @@
     btnEffectuerVirement.onclick = () => {
         window.location.href = "virement.html";
     };
-    // Voir carte virtuelle ouvre modal c
+    // Voir carte virtuelle ouvre modal carte virtuelle
+    btnVoirCarteVirtuelle.onclick = () => {
+        deselectAll();
+        virtualCardBtn.classList.add("active");
+        virtualCardModal.style.display = "flex";
+        portefeuilleSection.style.display = "none";
+    };
+    // Navigation clavier accessible sur footer
+    [portefeuilleBtn, virementBtn, virtualCardBtn, monCompteBtn].forEach(btn => {
+        btn.addEventListener("keydown", e => {
+            if(e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                btn.click();
+            }
+        });
+    });
+
+    /* === Gestion utilisateur + notifications === */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Récupérer email
+      const emailInput = document.getElementById("email");
+      const email = emailInput ? emailInput.value.trim() : "";
+      
+      const userIcon = document.getElementById("userIcon");
+      const userInitials = document.getElementById("userInitials");
+      const userPhoto = document.getElementById("userPhoto");
+      const photoUpload = document.getElementById("photoUpload");
+      
+      // Afficher les 2 premières lettres email en majuscule si email ok
+      function getInitials(email) {
+        if(!email) return "?";
+        const namePart = email.split("@")[0];
+        if(!namePart) return "?";
+        return namePart.slice(0, 2).toUpperCase();
+      }
+      
+      // Initialisation
+      userInitials.textContent = getInitials(email);
+      userPhoto.style.display = "none";
+
+      // Gestion upload photo
+      userIcon.addEventListener("click", () => {
+        photoUpload.click();
+      });
+
+      // Support clavier: espace / entrée
+      userIcon.addEventListener("keydown", e => {
+        if(e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          photoUpload.click();
+        }
+      });
+
+      photoUpload.addEventListener("change", () => {
+        const file = photoUpload.files[0];
+        if(file) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            userPhoto.src = e.target.result;
+            userPhoto.style.display = "block";
+            userInitials.textContent = "";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Notifications
+      const notificationBtn = document.getElementById("notificationBtn");
+      const notificationList = document.getElementById("notificationList");
+      const notifBadge = document.getElementById("notif-badge");
+
+      // Notifications modifiables ici :
+      const notifications = [
+        "Bienvenue sur votre tableau de bord !",
+        "Votre solde a été mis à jour.",
+        "Nouvelle offre disponible."
+      ];
+
+      function updateNotifications() {
+        const ul = document.getElementById("notificationItems");
+        ul.innerHTML = "";
+        if(notifications.length === 0){
+          const li = document.createElement("li");
+          li.textContent = "Aucune notification";
+          ul.appendChild(li);
+          notifBadge.style.display = "none";
+          return;
+        }
+        notifications.forEach(note => {
+          const li = document.createElement("li");
+          li.textContent = note;
+          ul.appendChild(li);
+        });
+        notifBadge.textContent = notifications.length;
+        notifBadge.style.display = notifications.length > 0 ? "inline-block" : "none";
+      }
+
+      updateNotifications();
+
+      // Afficher / cacher liste notifications au clic
+      notificationBtn.addEventListener("click", () => {
+        const isVisible = notificationList.style.display === "block";
+        if(isVisible){
+          notificationList.style.display = "none";
+          notificationBtn.setAttribute("aria-expanded", "false");
+          notificationList.setAttribute("hidden", "");
+        } else {
+          notificationList.style.display = "block";
+          notificationBtn.setAttribute("aria-expanded", "true");
+          notificationList.removeAttribute("hidden");
+        }
+      });
+
+      // Cacher notifications si clic en dehors
+      document.addEventListener("click", (e) => {
+        if(!notificationBtn.contains(e.target) && !notificationList.contains(e.target)){
+          notificationList.style.display = "none";
+          notificationBtn.setAttribute("aria-expanded", "false");
+          notificationList.setAttribute("hidden", "");
+        }
+      });
+
+      // Échapper ferme notifications
+      document.addEventListener("keydown", e => {
+        if(e.key === "Escape"){
+          notificationList.style.display = "none";
+          notificationBtn.setAttribute("aria-expanded", "false");
+          notificationList.setAttribute("hidden", "");
+          notificationBtn.focus();
+        }
+      });
+
+    });
+</script>
+</body>
+</html>
