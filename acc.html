@@ -6,7 +6,12 @@
 <title>Portefeuille - Vantex</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
-    _,_ ::before, *::after {
+    /* Empêche tout scroll sur toute la page */
+    html, body {
+        overflow: hidden;
+        height: 100%;
+    }
+    *, *::before, *::after {
         box-sizing: border-box;
     }
     body {
@@ -18,7 +23,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        padding: 10px 10px 70px; /* moins de padding */
+        padding: 10px 10px 70px;
         color: #222;
     }
     .welcome-container {
@@ -26,20 +31,21 @@
         max-width: 400px;
         width: 100%;
         border-radius: 12px;
-        padding: 15px 20px 15px; /* padding réduit */
+        padding: 15px 20px 15px;
         box-shadow: 0 4px 12px rgb(0 0 0 / 0.07);
-        margin-bottom: 15px; /* marge réduite */
+        margin-bottom: 15px;
         text-align: center;
         color: #2e2e2e;
+        flex-shrink: 0;
     }
     .welcome-container h1 {
         font-weight: 700;
-        font-size: 22px; /* plus petit */
+        font-size: 22px;
         margin: 0 0 6px 0;
         color: #1976d2;
     }
     .welcome-container p {
-        font-size: 14px; /* plus petit */
+        font-size: 14px;
         margin: 0;
         font-style: normal;
         color: #555;
@@ -50,11 +56,13 @@
         width: 100%;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
-        padding: 20px 20px 20px; /* padding réduit */
+        padding: 20px 20px 20px;
+        overflow: hidden;
+        flex-shrink: 0;
     }
     #portefeuilleSection .solde-label {
         font-weight: 600;
-        font-size: 14px; /* plus petit */
+        font-size: 14px;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -66,7 +74,7 @@
         font-size: 18px;
     }
     #portefeuilleSection .solde-montant {
-        font-size: 30px; /* un peu plus petit */
+        font-size: 30px;
         font-weight: 700;
         color: #000;
         margin: 0 0 12px 0;
@@ -75,7 +83,7 @@
     #portefeuilleSection .description {
         font-style: normal;
         font-weight: 400;
-        font-size: 13px; /* plus petit */
+        font-size: 13px;
         color: #666666;
         margin-bottom: 18px;
     }
@@ -90,8 +98,8 @@
         background-color: #f2f8ff;
         border: none;
         border-radius: 12px;
-        padding: 9px 16px; /* moins grand */
-        font-size: 13px; /* plus petit */
+        padding: 9px 16px;
+        font-size: 13px;
         font-weight: 600;
         color: #1976d2;
         display: inline-flex;
@@ -117,10 +125,15 @@
         display: flex;
         align-items: center;
         gap: 6px;
+        white-space: nowrap;
     }
     .transaction-history > h4 i {
         color: #1976d2;
         font-size: 20px;
+    }
+    .transaction-history {
+        max-height: 190px; /* limiter hauteur historique pour pas déborder */
+        overflow: hidden; /* on cache le scroll */
     }
     .transaction {
         border-radius: 10px;
@@ -195,6 +208,7 @@
         box-shadow: 0 -3px 10px rgb(0 0 0 / 0.12);
         padding: 10px 5px;
         z-index: 10;
+        flex-shrink: 0;
     }
     .footer-icons div {
         text-align: center;
@@ -224,6 +238,10 @@
         font-size: 13px;
         margin-top: 5px;
         user-select: none;
+    }
+    /* Styles pour modales : empêcher scroll dans le fond */
+    .modal {
+        overflow: hidden !important;
     }
 </style>
 </head>
