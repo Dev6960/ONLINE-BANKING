@@ -1,288 +1,449 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <!-- Désactivation du zoom global sur la page -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Accueil</title>
-    <!-- Inclure Font Awesome pour les icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4f7;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding-top: 20px; /* Espacement du haut de la page */
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Portefeuille - Vantex</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-        .container {
-            text-align: center;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px; /* Réduction de la taille de la carte */
-            width: 350px; /* Réduction de la largeur de la carte */
-            margin-bottom: 20px; /* Espacement entre le message et les autres éléments */
-        }
+<style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
 
-        h1 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9fbfc;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px 10px 70px; /* moins de padding */
+        color: #222;
+    }
 
-        p {
-            font-size: 16px; /* Réduction de la taille du texte */
-            color: #333;
-        }
+    .welcome-container {
+        background-color: #fff;
+        max-width: 400px;
+        width: 100%;
+        border-radius: 12px;
+        padding: 15px 20px 15px; /* padding réduit */
+        box-shadow: 0 4px 12px rgb(0 0 0 / 0.07);
+        margin-bottom: 15px; /* marge réduite */
+        text-align: center;
+        color: #2e2e2e;
+    }
+    .welcome-container h1 {
+        font-weight: 700;
+        font-size: 22px; /* plus petit */
+        margin: 0 0 6px 0;
+        color: #1976d2;
+    }
+    .welcome-container p {
+        font-size: 14px; /* plus petit */
+        margin: 0;
+        font-style: normal;
+        color: #555;
+    }
 
-        /* Style pour les icônes en bas de la page */
-        .footer-icons {
-            display: flex;
-            justify-content: flex-start; /* Aligner les icônes vers la gauche */
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #ffffff;
-            padding: 5px 0; /* Réduire la taille du padding pour faire plus de place */
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-        }
+    #portefeuilleSection {
+        background-color: #fff;
+        max-width: 400px;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+        padding: 20px 20px 20px; /* padding réduit */
+    }
 
-        .footer-icons div {
-            text-align: center;
-            flex: none; /* Réduire l'espace attribué à chaque icône */
-            margin-left: 10px; /* Ajouter un peu d'espace à gauche entre les icônes */
-        }
+    #portefeuilleSection .solde-label {
+        font-weight: 600;
+        font-size: 14px; /* plus petit */
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #333333;
+        margin-bottom: 4px;
+    }
+    #portefeuilleSection .solde-label .check-icon {
+        color: #1976d2;
+        font-size: 18px;
+    }
 
-        .footer-icons i {
-            font-size: 24px; /* Réduire la taille des icônes */
-            color: #4CAF50;
-            cursor: pointer;
-        }
+    #portefeuilleSection .solde-montant {
+        font-size: 30px; /* un peu plus petit */
+        font-weight: 700;
+        color: #000;
+        margin: 0 0 12px 0;
+        letter-spacing: 0.04em;
+    }
 
-        .footer-icons i:hover {
-            color: #333;
-        }
+    #portefeuilleSection .description {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px; /* plus petit */
+        color: #666666;
+        margin-bottom: 18px;
+    }
 
-        .footer-icons span {
-            display: block;
-            margin-top: 5px;
-            color: red; /* Changer la couleur des noms des icônes en rouge */
-            font-size: 12px; /* Réduire la taille du texte sous les icônes */
-        }
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .actions button {
+        flex: 1 1 130px;
+        background-color: #f2f8ff;
+        border: none;
+        border-radius: 12px;
+        padding: 9px 16px; /* moins grand */
+        font-size: 13px; /* plus petit */
+        font-weight: 600;
+        color: #1976d2;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
+        box-shadow: 0 3px 6px rgb(25 118 210 / 0.15);
+    }
+    .actions button:hover, .actions button:focus {
+        background-color: #e3f2fd;
+        outline: none;
+        color: #0d47a1;
+        box-shadow: 0 5px 12px rgb(13 71 161 / 0.3);
+    }
+    .actions button i {
+        font-size: 16px;
+    }
 
-        /* Style pour la fenêtre modale */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); /* Fond semi-transparent */
-            justify-content: center;
-            align-items: center;
-        }
+    .transaction-history > h4 {
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 15px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .transaction-history > h4 i {
+        color: #1976d2;
+        font-size: 20px;
+    }
 
-        .modal-content {
-            background-color: #fff;
-            padding: 20px; /* Réduction du padding */
-            border-radius: 20px; /* Bord arrondi */
-            width: 80%; /* Largeur de la modale */
-            max-width: 600px; /* Limiter la largeur maximale */
-            height: auto; /* Ajuste la hauteur */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Ombre douce */
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Pour espacer le contenu */
-            overflow-y: auto; /* Permet le défilement si le contenu dépasse la hauteur de la modale */
-        }
+    .transaction {
+        border-radius: 10px;
+        background-color: #f9fafb;
+        padding: 12px 16px;
+        margin-bottom: 14px;
+        box-shadow: 0 1px 4px rgb(0 0 0 / 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+    }
+    .transaction .details {
+        flex: 1;
+        min-width: 0;
+    }
+    .transaction .details .desc {
+        font-weight: 600;
+        font-size: 14px;
+        color: #222222;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .transaction .details .desc i {
+        font-size: 16px;
+    }
+    .transaction .details .date {
+        font-size: 12px;
+        color: #777777;
+    }
+    .transaction .amount {
+        font-weight: 700;
+        font-size: 14px;
+        min-width: 110px;
+        text-align: right;
+        white-space: nowrap;
+    }
+    .transaction.sent {
+        background-color: #ffeded;
+        border: 1px solid #f5a1a1;
+    }
+    .transaction.sent .desc i {
+        color: #d32f2f;
+    }
+    .transaction.sent .amount {
+        color: #d32f2f;
+    }
+    .transaction.received {
+        background-color: #e6f4ea;
+        border: 1px solid #a3d4a5;
+    }
+    .transaction.received .desc i {
+        color: #388e3c;
+    }
+    .transaction.received .amount {
+        color: #388e3c;
+    }
 
-        .modal-content h3 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-            font-size: 24px; /* Réduction de la taille du titre */
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .modal-content p {
-            font-size: 16px; /* Réduction de la taille du texte */
-            color: #333;
-            margin: 10px 0;
-            line-height: 1.6; /* Espacement entre les lignes */
-            text-align: left; /* Alignement à gauche */
-        }
-
-        .modal-content button {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 20px;
-            width: 48%;
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .modal-content button:hover {
-            background-color: #d32f2f;
-        }
-
-        /* Carte virtuelle - initialement cachée */
-        .virtual-card {
-            display: none;  /* Cacher par défaut */
-            margin-top: 20px;
-            background-color: #007BFF; /* Bleu professionnel */
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        /* Message de sécurité en rouge avec fond jaune pâle */
-        .security-message {
-            color: red;  /* Changer la couleur du texte en rouge */
-            font-size: 16px; /* Taille du texte */
-            margin-top: 10px;
-            background-color: #FFF9C4; /* Jaune pâle pour le fond */
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }
-    </style>
+    .footer-icons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        max-width: 100vw;
+        background-color: #fff;
+        box-shadow: 0 -3px 10px rgb(0 0 0 / 0.12);
+        padding: 10px 5px;
+        z-index: 10;
+    }
+    .footer-icons div {
+        text-align: center;
+        flex-grow: 1;
+        cursor: pointer;
+        border-radius: 8px;
+        padding: 5px 0;
+        color: #1976d2;
+        transition: background-color 0.3s ease;
+        user-select: none;
+    }
+    .footer-icons div.active {
+        background-color: #1976d2;
+        color: white;
+        font-weight: 700;
+        box-shadow: 0 0 10px rgb(25 118 210 / 0.6);
+    }
+    .footer-icons div:hover:not(.active) {
+        background-color: #e3f2fd;
+    }
+    .footer-icons i {
+        font-size: 24px;
+        pointer-events: none;
+    }
+    .footer-icons span {
+        display: block;
+        font-size: 13px;
+        margin-top: 5px;
+        user-select: none;
+    }
+</style>
 </head>
 <body>
-    <!-- Message Bienvenue -->
-    <div class="container">
-        <h1>Bienvenue, <span id="user-name">Utilisateur</span>!</h1>
-        <p id="message">Votre inscription a été réussie. Félicitations !</p>
+
+<div class="welcome-container" role="region" aria-label="Message de bienvenue" tabindex="0">
+    <h1>Bienvenue, <span id="user-name">Utilisateur</span> !</h1>
+    <p>Votre inscription a été réussie. Félicitations !</p>
+</div>
+
+<div id="portefeuilleSection" aria-label="Portefeuille et historique des transactions" role="main" tabindex="0">
+
+    <p class="solde-label">
+        Solde disponible
+        <i class="fas fa-circle-check check-icon" aria-hidden="true" title="Solde vérifié"></i>
+    </p>
+
+    <p class="solde-montant" aria-live="polite" aria-atomic="true">0,00 Rs</p>
+    <p class="description">Compte pour tous vos besoins</p>
+
+    <div class="actions" role="group" aria-label="Actions du portefeuille">
+        <button id="btnVoirIban" aria-label="Voir mon IBAN">
+            <i class="fas fa-file-invoice"></i> Voir mon IBAN
+        </button>
+        <button id="btnEffectuerVirement" aria-label="Effectuer un virement sortant">
+            <i class="fas fa-arrow-up-right-from-square"></i> Effectuer un virement
+        </button>
+        <button id="btnVoirCarteVirtuelle" aria-label="Voir ma carte virtuelle">
+            <i class="fas fa-credit-card"></i> Voir ma carte virtuelle
+        </button>
     </div>
 
-    <!-- Icônes en bas -->
-    <div class="footer-icons">
-        <div id="portefeuilleBtn">
-            <i class="fas fa-wallet" title="Portefeuille"></i>
-            <span>Portefeuille</span>
-        </div>
-        <div onclick="window.location.href='virement.html'">
-            <i class="fas fa-exchange-alt" title="Virement"></i>
-            <span>Virement</span>
-        </div>
-        <div id="virtualCardBtn">
-            <i class="fas fa-credit-card" title="Carte virtuelle"></i>
-            <span>Carte virtuelle</span>
-        </div>
-        <div onclick="showCompte()">
-            <i class="fas fa-user-circle" title="Mon compte"></i>
-            <span>Mon compte</span>
-        </div>
-    </div>
+    <div class="transaction-history" aria-live="polite" aria-label="Historique des transactions">
+        <h4><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> Historique des transactions</h4>
 
-    <!-- Modale de Carte virtuelle -->
-    <div id="virtualCardModal" class="modal">
-        <div class="modal-content">
-            <h3>Carte virtuelle</h3>
-            <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/InShot_20250608_193242344.jpg" alt="Carte virtuelle" style="width:100%; max-width: 300px; border-radius: 10px;">
-            <p class="security-message">Pour des raisons de sécurité, les 4 derniers chiffres de votre carte ont été masqués.</p>
-            <button onclick="closeVirtualCardModal()">Fermer</button>
-        </div>
-    </div>
-
-    <!-- Modale de Portefeuille -->
-    <div id="portfolioModal" class="modal">
-        <div class="modal-content">
-            <h3>Portefeuille</h3>
-            <p>Votre portefeuille contient les éléments suivants :</p>
-            <ul>
-                <li>Solde disponible: 1000€</li>
-                <li>Transactions récentes: Virement de 100€</li>
-            </ul>
-            <button onclick="closePortfolioModal()">Fermer</button>
-        </div>
-    </div>
-
-    <!-- Modale de Mon Compte -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <h3>Vos informations de compte :</h3>
-            <p><strong>Type de Compte :</strong> Compte courant</p>
-            <p><strong>Titulaire du Compte :</strong> RAMGOULAM LOUIS PAUL GERARD</p>
-            <p><strong>Pays de résidence :</strong>  Maurice</p>
-            <p><strong>Adresse de résidence :</strong> ILE MAURICE 230</p>
-            <p><strong>Adresse e-mail :</strong> lpgr31@gmail.com</p>
-            <p><strong>Numéro de téléphone :</strong> +23057895689</p>
-            <div>
-                <button class="left-btn" onclick="seDeconnecter()">Se déconnecter</button>
-                <button class="right-btn" onclick="closeMyAccountModal()">Retour</button>
+        <article class="transaction sent" tabindex="0" role="group" aria-label="Virement envoyé à Gerard, montant négatif - 200 000 Rs, date 4 avril 2025 à 07:31">
+            <div class="details">
+                <div class="desc"><i class="fas fa-arrow-up"></i> Virement envoyé à Gerard...</div>
+                <div class="date">04/04/2025 • 07:31</div>
             </div>
-        </div>
+            <div class="amount">- 200 000,00 Rs</div>
+        </article>
+
+        <article class="transaction received" tabindex="0" role="group" aria-label="Virement reçu de Vantex, montant positif +200 000 Rs, date 16 mars 2025 à 11:08">
+            <div class="details">
+                <div class="desc"><i class="fas fa-arrow-down"></i> Virement reçu de Vantex...</div>
+                <div class="date">16/03/2025 • 11:08</div>
+            </div>
+            <div class="amount">+ 200 000,00 Rs</div>
+        </article>
     </div>
 
-    <script>
-        // Fonction pour afficher la carte virtuelle uniquement quand on clique sur "Carte virtuelle"
-        document.getElementById("virtualCardBtn").onclick = function() {
-            var virtualCardModal = document.getElementById("virtualCardModal");
-            virtualCardModal.style.display = "flex"; // Afficher la modale de carte virtuelle
-        }
+</div>
 
-        // Fonction pour afficher la modale de Portefeuille
-        document.getElementById("portefeuilleBtn").onclick = function() {
-            var portfolioModal = document.getElementById("portfolioModal");
-            portfolioModal.style.display = "flex"; // Afficher la modale de portefeuille
-        }
+<nav class="footer-icons" role="navigation" aria-label="Menu principal">
+    <div id="portefeuilleBtn" class="active" tabindex="0" role="button" aria-pressed="true" aria-label="Portefeuille">
+        <i class="fas fa-wallet" aria-hidden="true"></i>
+        <span>Portefeuille</span>
+    </div>
+    <div id="virementBtn" tabindex="0" role="button" aria-label="Virement">
+        <i class="fas fa-exchange-alt" aria-hidden="true"></i>
+        <span>Virement</span>
+    </div>
+    <div id="virtualCardBtn" tabindex="0" role="button" aria-label="Carte virtuelle">
+        <i class="fas fa-credit-card" aria-hidden="true"></i>
+        <span>Carte virtuelle</span>
+    </div>
+    <div id="monCompteBtn" tabindex="0" role="button" aria-label="Mon compte">
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+        <span>Mon compte</span>
+    </div>
+</nav>
 
-        // Fonction pour fermer la modale de Carte virtuelle
-        function closeVirtualCardModal() {
-            var virtualCardModal = document.getElementById("virtualCardModal");
-            virtualCardModal.style.display = "none"; // Fermer la modale de carte virtuelle
-        }
+<!-- Modales -->
 
-        // Fonction pour fermer la modale de Portefeuille
-        function closePortfolioModal() {
-            var portfolioModal = document.getElementById("portfolioModal");
-            portfolioModal.style.display = "none"; // Fermer la modale de portefeuille
-        }
+<div id="virtualCardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="virtualCardTitle" style="display:none; justify-content:center; align-items:center; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:100;">
+    <div class="modal-content" style="max-width:500px; max-height:80vh; overflow-y:auto; background:#fff; border-radius:20px; padding:20px; margin:auto; text-align:center; box-shadow:0 8px 16px rgb(0 0 0 / 0.3);">
+        <h3 id="virtualCardTitle" style="color:#1976d2; margin-bottom:20px;">Carte virtuelle</h3>
+        <img src="https://raw.githubusercontent.com/Walyy578/ONLINE-BANKING/main/InShot_20250608_193242344.jpg" alt="Carte virtuelle" style="width:100%; max-width: 300px; border-radius: 10px; margin-bottom:10px;">
+        <p style="color:#b71c1c; font-weight:600; background:#fff9c4; padding:10px; border-radius: 5px;">Pour des raisons de sécurité, les 4 derniers chiffres de votre carte ont été masqués.</p>
+        <button id="closeVirtualCardBtn" aria-label="Fermer la carte virtuelle" style="background:#d32f2f; border:none; padding:10px 25px; color:#fff; border-radius:8px; cursor:pointer; font-size:16px;">Fermer</button>
+    </div>
+</div>
 
-        // Fonction pour afficher la modale de Mon Compte
-        function showCompte() {
-            var modal = document.getElementById("myModal");
-            modal.style.display = "flex"; // Afficher la modale avec flex pour centrer
-        }
+<div id="myModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="monCompteTitle" style="display:none; justify-content:center; align-items:center; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:100;">
+    <div class="modal-content" style="max-width:480px; max-height:80vh; overflow-y:auto; background:#fff; border-radius:20px; padding:20px; margin:auto; text-align:left; box-shadow:0 8px 16px rgb(0 0 0 / 0.3);">
+        <h3 id="monCompteTitle" style="color:#1976d2; margin-bottom:20px; text-align:center;">Vos informations de compte :</h3>
+        <p><strong>Type de Compte :</strong> Compte courant</p>
+        <p><strong>Titulaire du Compte :</strong> RAMGOULAM LOUIS PAUL GERARD</p>
+        <p><strong>Pays de résidence :</strong> Maurice</p>
+        <p><strong>Adresse de résidence :</strong> ILE MAURICE 230</p>
+        <p><strong>Adresse e-mail :</strong> lpgr31@gmail.com</p>
+        <p><strong>Numéro de téléphone :</strong> +23057895689</p>
+        <div style="display:flex; justify-content: space-between; margin-top: 25px;">
+            <button id="btnSeDeconnecter" style="background:#d32f2f; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; flex:1; margin-right:10px;">Se déconnecter</button>
+            <button id="btnCloseMyAccount" style="background:#1976d2; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; flex:1;">Retour</button>
+        </div>
+    </div>
+</div>
 
-        // Fonction pour fermer la modale de Mon Compte
-        function closeMyAccountModal() {
-            var modal = document.getElementById("myModal");
-            modal.style.display = "none"; // Fermer la modale de Mon Compte
-        }
+<script>
+    // Elements selectionnés
+    const portefeuilleBtn = document.getElementById("portefeuilleBtn");
+    const virementBtn = document.getElementById("virementBtn");
+    const virtualCardBtn = document.getElementById("virtualCardBtn");
+    const monCompteBtn = document.getElementById("monCompteBtn");
 
-        // Fonction de déconnexion
-        function seDeconnecter() {
-            alert("Vous avez été déconnecté.");
-            // Rediriger vers la page de connexion ou réinitialiser l'état
-            // window.location.href = "login.html"; // exemple de redirection
-        }
-    </script>
+    const portefeuilleSection = document.getElementById("portefeuilleSection");
+    const virtualCardModal = document.getElementById("virtualCardModal");
+    const closeVirtualCardBtn = document.getElementById("closeVirtualCardBtn");
+    const myModal = document.getElementById("myModal");
+    const btnSeDeconnecter = document.getElementById("btnSeDeconnecter");
+    const btnCloseMyAccount = document.getElementById("btnCloseMyAccount");
 
-    <!-- Start of Tawk.to Script -->
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-        (function() {
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/684583d5dc679b190e4c631f/1it7olvg3'; /* Remplacez par votre script Tawk personnalisé */
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
-    </script>
-    <!-- End of Tawk.to Script -->
+    const btnVoirIban = document.getElementById("btnVoirIban");
+    const btnEffectuerVirement = document.getElementById("btnEffectuerVirement");
+    const btnVoirCarteVirtuelle = document.getElementById("btnVoirCarteVirtuelle");
+
+    function deselectAll(){
+        portefeuilleBtn.classList.remove("active");
+        virementBtn.classList.remove("active");
+        virtualCardBtn.classList.remove("active");
+        monCompteBtn.classList.remove("active");
+    }
+
+    // Portefeuille affiche section principale
+    portefeuilleBtn.onclick = () => {
+        deselectAll();
+        portefeuilleBtn.classList.add("active");
+        portefeuilleSection.style.display = "block";
+        virtualCardModal.style.display = "none";
+        myModal.style.display = "none";
+    };
+
+    // Virement redirection
+    virementBtn.onclick = () => {
+        alert("Redirection vers la page de virement.");
+        window.location.href = "virement.html";
+    };
+
+    // Carte virtuelle montre modal
+    virtualCardBtn.onclick = () => {
+        deselectAll();
+        virtualCardBtn.classList.add("active");
+        virtualCardModal.style.display = "flex";
+        portefeuilleSection.style.display = "none";
+        myModal.style.display = "none";
+    };
+
+    closeVirtualCardBtn.onclick = () => {
+        virtualCardModal.style.display = "none";
+        deselectAll();
+        portefeuilleBtn.classList.add("active");
+        portefeuilleSection.style.display = "block";
+    };
+
+    // Mon compte montre modal
+    monCompteBtn.onclick = () => {
+        deselectAll();
+        monCompteBtn.classList.add("active");
+        myModal.style.display = "flex";
+        portefeuilleSection.style.display = "none";
+        virtualCardModal.style.display = "none";
+    };
+
+    btnCloseMyAccount.onclick = () => {
+        myModal.style.display = "none";
+        deselectAll();
+        portefeuilleBtn.classList.add("active");
+        portefeuilleSection.style.display = "block";
+    };
+
+    btnSeDeconnecter.onclick = () => {
+        alert("Vous avez été déconnecté.");
+        // window.location.href = "login.html";
+    };
+
+    // Voir IBAN ouvre modale Mon compte au lieu d'alerte
+    btnVoirIban.onclick = () => {
+        deselectAll();
+        monCompteBtn.classList.add("active");
+        myModal.style.display = "flex";
+        portefeuilleSection.style.display = "none";
+        virtualCardModal.style.display = "none";
+    };
+
+    // Effectuer virement continue redirection vers virement.html
+    btnEffectuerVirement.onclick = () => {
+        window.location.href = "virement.html";
+    };
+
+    // Voir carte virtuelle ouvre modal carte virtuelle
+    btnVoirCarteVirtuelle.onclick = () => {
+        deselectAll();
+        virtualCardBtn.classList.add("active");
+        virtualCardModal.style.display = "flex";
+        portefeuilleSection.style.display = "none";
+    };
+
+    // Navigation clavier accessible sur footer
+    [portefeuilleBtn, virementBtn, virtualCardBtn, monCompteBtn].forEach(btn => {
+        btn.addEventListener("keydown", e => {
+            if(e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                btn.click();
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
