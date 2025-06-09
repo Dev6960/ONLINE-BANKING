@@ -176,7 +176,6 @@
             text-align: center;
             margin-top: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -194,18 +193,15 @@
             </div>
         </form>
 
-        <!-- Message de blocage du compte après plusieurs tentatives -->
         <div id="blockedMessage" class="blocked-container">
             <div class="blocked-message">Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.</div>
         </div>
 
-        <!-- Bouton retour vers la page d'accueil -->
         <div class="button-container">
             <button class="button-back" onclick="redirectToAccueil()">Retour à l'Accueil</button>
         </div>
     </div>
 
-    <!-- Modal pour saisir le code -->
     <div id="codeModal" class="modal">
         <div class="modal-content">
             <h3>Saisissez votre code de confirmation</h3>
@@ -215,7 +211,6 @@
         </div>
     </div>
 
-    <!-- Modal pour la progression du virement -->
     <div id="progressModal" class="modal">
         <div class="progress-container">
             <h3>Progression du virement</h3>
@@ -227,7 +222,6 @@
         </div>
     </div>
 
-    <!-- Modal d'alerte -->
     <div id="alertModal" class="modal">
         <div class="alert-content">
             <div class="alert-message" id="alertMessage"></div>
@@ -235,7 +229,6 @@
         </div>
     </div>
 
-    <!-- Modal de blocage du compte -->
     <div id="blockModal" class="modal">
         <div class="block-content">
             <div class="blocked-message">Votre compte a été bloqué pour des raisons de sécurité. Contactez l'assistance pour débloquer votre compte.</div>
@@ -244,31 +237,22 @@
     </div>
 
     <script>
-        // Exemple d'email bloqué (à simuler avec un email récupéré dans la session)
-        const emailBloque = ["user@domain.com", "blocked@domain.com"]; // Liste des emails bloqués
-
-        // Tentatives de validation du code
+        const emailBloque = ["user@domain.com", "blocked@domain.com"];
         let tentatives = 0;
-        const codeStocke = "TEST226FELIX"; // Code valide
-        let objectif = 100; // Objectif de progression (modifiable)
+        const codeStocke = "TEST226FELIX";
+        let objectif = 100;
 
-        // Fonction appelée lorsque l'utilisateur clique sur "Continuer"
         function demanderCode() {
             const emailUtilisateur = localStorage.getItem("email");
-
-            // Vérification si l'email est bloqué
             if (emailBloque.includes(emailUtilisateur)) {
                 afficherAlert("Votre compte est bloqué. Veuillez contacter l'assistance.");
                 return;
             }
-
-            // Si le compte n'est pas bloqué, procéder à l'affichage de la modal de code
-            document.getElementById("formContainer").style.display = "none";  // Masquer le formulaire
-            document.getElementById("codeModal").style.display = "block";  // Afficher la modal pour saisir le code
-            document.getElementById("codeModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+            document.getElementById("formContainer").style.display = "none";
+            document.getElementById("codeModal").style.display = "block";
+            document.getElementById("codeModal").style.backgroundColor = getRandomColor();
         }
 
-        // Vérification du code de confirmation
         function verifierCode() {
             const codeUtilisateur = document.getElementById("codeUtilisateur").value;
             if (codeUtilisateur === codeStocke) {
@@ -281,20 +265,18 @@
                 } else {
                     afficherAlert("Vous avez échoué 3 fois. Votre compte sera bloqué.");
                     document.getElementById("codeModal").style.display = "none";
-                    document.getElementById("blockModal").style.display = "block"; // Afficher le modal de blocage
-                    document.getElementById("formContainer").style.display = "none"; // Masquer le formulaire
+                    document.getElementById("blockModal").style.display = "block";
+                    document.getElementById("formContainer").style.display = "none";
                 }
             }
         }
 
-        // Ouvrir la modal de progression du virement
         function ouvrirModalProgression() {
             document.getElementById("progressModal").style.display = "block";
-            document.getElementById("progressModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+            document.getElementById("progressModal").style.backgroundColor = getRandomColor();
             progressionVirement();
         }
 
-        // Gestion de la progression du virement
         function progressionVirement() {
             let currentProgress = 0;
             const progressBar = document.getElementById("progressBar");
@@ -302,7 +284,7 @@
 
             const interval = setInterval(() => {
                 if (currentProgress < objectif) {
-                    const increment = Math.floor(Math.random() * 4) + 1;  // Valeur aléatoire entre 1 et 4
+                    const increment = Math.floor(Math.random() * 4) + 1;
                     currentProgress += increment;
                     if (currentProgress > objectif) currentProgress = objectif;
                     progressBar.style.width = currentProgress + "%";
@@ -316,43 +298,38 @@
                         resultIcon.innerHTML = "❌ Transfert échoué!";
                     }
                 }
-            }, 1000);  // Met à jour la barre toutes les secondes
+            }, 1000);
         }
 
-        // Revenir au formulaire
         function revenirFormulaire() {
-            document.getElementById("formContainer").style.display = "block";  // Afficher le formulaire
-            document.getElementById("codeModal").style.display = "none";  // Masquer la modal de code
-            document.getElementById("progressModal").style.display = "none";  // Masquer la modal de progression
-            document.getElementById("blockedMessage").style.display = "none"; // Masquer le message de blocage
+            document.getElementById("formContainer").style.display = "block";
+            document.getElementById("codeModal").style.display = "none";
+            document.getElementById("progressModal").style.display = "none";
+            document.getElementById("blockedMessage").style.display = "none";
         }
 
-        // Afficher un message d'alerte dans un modal
         function afficherAlert(message) {
             document.getElementById("alertMessage").innerText = message;
             document.getElementById("alertModal").style.display = "block";
-            document.getElementById("alertModal").style.backgroundColor = getRandomColor();  // Couleur aléatoire
+            document.getElementById("alertModal").style.backgroundColor = getRandomColor();
         }
 
-        // Fermer le modal d'alerte
         function fermerAlert() {
             document.getElementById("alertModal").style.display = "none";
         }
 
-        // Fermer le modal de blocage et rediriger vers l'accueil
         function fermerBlocage() {
             document.getElementById("blockModal").style.display = "none";
             redirectToAccueil();
         }
 
-        // Rediriger vers la page d'accueil après un petit délai
+        // ✅ Redirection corrigée
         function redirectToAccueil() {
             setTimeout(() => {
-                window.location.href = 'accueil.html';  // Assurez-vous que le chemin est correct
-            }, 500); // 500ms de délai avant la redirection
+                window.location.href = '/ONLINE-BANKING/accueil.html';
+            }, 500);
         }
 
-        // Générer une couleur aléatoire
         function getRandomColor() {
             const letters = '0123456789ABCDEF';
             let color = '#';
