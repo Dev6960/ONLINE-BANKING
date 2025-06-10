@@ -1,4 +1,4 @@
-<Files "acc.html">
+<Files "account.html">
   Header set X-Robots-Tag "noindex, nofollow"
 </Files>
 
