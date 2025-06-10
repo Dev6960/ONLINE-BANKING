@@ -1,7 +1,0 @@
-<Files "account.html">
-  Header set X-Robots-Tag "noindex, nofollow"
-</Files>
-
-<Files "virement.html">
-  Header set X-Robots-Tag "noindex, nofollow"
-</Files>
